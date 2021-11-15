@@ -1,0 +1,118 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Kahoot Tournament</h1>
+<p class="home-paragraph">
+Un site pe care se pot pune intrebari tip grila la care sa se raspunda in timp real, gen Kahoot, dar cu un twist:
+Este pe grupuri si in fiecare grup este cate un leaderboard. In functie de pozitia pe leaderboard,
+ai diferite ranguri si (poate) drepturi in grup. In functie de asta poti face si intrebari/ poti invita/da afara membrii,
+poti provoca alte grupuri la tournamente. Membrii din grup sunt separati in profesori si studenti
+</p>
+<p class="home-paragraph">
+Bineinteles, site-ul este pe baza de roluri. Exista mai multe tipuri de conturi. In general, orice tip de cont, pentru a avea puterea de exercitare a drepturilor sale, trebuie ca acesta sa fie logat
+</p>
+<p class="home-paragraph">
+Use Case: Utilizatorul se logheaza in aplicatie
+<br>
+Primary Actor: Utilizator
+<br>
+Main success scenario: 
+1. Utilizatorul introduce un nume de utilizator si o parola
+2. Utilizatorul apasa pe un buton de log in
+3. Utilizatorul este acum logat in cont
+<br>
+Alternative Sequence: Utilizatorul nu exista, caz in care trebuie sa isi creeze un cont
+</p>
+<ul>
+<li>
+Elev/Student - Poate sa :
+	isi creeze un cont, dupa care sa foloseasca acel cont pentru logare
+	sa isi vizualizeze datele personale
+	se inscrie sau sa paraseasca grupuri de studenti
+	sa isi vizualizeze drepturile intr-un grup si diferite statistici (punctaje obtinute la jocuri anterioare, jocuri jucate in total, jocuri castigate etc.)
+	in mod individual, poate provoca alt jucator la o runda de raspuns la intrebari pe un set de intrebari predefinite ale site-ului
+<p class="home-paragraph">
+Use Case: Provocarea altui student la un meci de raspuns la intrebari
+<br>
+Primary Actor: Student
+<br>
+Main success scenario: 1. Utilizatorul se logheaza ca student
+2. Studentul alege un membru online din acelasi grup cu el pe care sa-l provoace
+3. Celalalt membru accepta invitatia
+4. Cei doi studenti intra in meci
+<br>
+Alternative Sequence: Utilizatorul provocat refuza invitatia, Caz in care utilizatorul care l-a provocat primeste o notificare in legatura cu asta
+<br>
+</p>
+</li>
+<li>
+Profesor : Aceleasi drepturi ca ale unui student (in afara de inscrierea intr-un grup si provocarile individuale). Pe langa acestea, el poate:
+	face teste cu intrebari diferite fara de cele predefinite ale site-ului
+	poate crea/sterge grupuri de studenti, precum si edita detaliile acestuia
+	poate adauga/da afara membri din grup
+	poate provoca alt grup la o intrecere de raspuns la intrebari
+</p class="home-paragraph">
+Use Case: Adaugarea unui student intr-un grup
+<br>
+Primary Actor: Profesor
+<br>
+Main success scenario: 1. Profesorul se logheaza cu un cont de profesor
+2. Profesorul acceseaza grupul in care vrea sa adauge studentul si va da click pe un buton corespunzator
+3. Profesorul va cauta studentul dupa nume
+4. Profesorul va adauga studentul dorit in grup
+<br>
+Alternative Sequence: Studentul respectiv nu este gasit. Profesorul va fi instiintat de acest lucru si va fi pus sa caute din nou studentul dorit
+<br>
+</p>
+</li>
+<li>
+Moderator: 
+	poate interveni cand e haos prin grupuri (gen sa dea afara membri, etc.). 
+	poate adauga/sterge/edita intrebari predefinite ale site-ului
+<p class="home-paragraph">
+Use Case: Editarea unei intrebari
+<br>
+Primary Actor:Moderator
+<br>
+Main success scenario: 1. Utilizatorul se logheaza cu cont de moderator
+2. Moderatorul cauta intrebarea dorita
+3. Moderatorul editeaza ce doreste din intrebare
+<br>
+Alternative Sequence: Intrebarea este stearsa itnretimp de alt moderator. Caz in care se primeste un mesaj de eroare
+<br>
+</p>
+</li>
+<li>
+Admin: 
+	control asupra oricarei informatii (inclusiv conturi)
+
+<p class="home-paragraph">
+Use Case: Modificarea datelor unui utilizator
+<br>
+Primary Actor: Admin @ViewBag.mesaj
+<br>
+Main success scenario: 1. Utilizatorul se logheaza cu cont de admin
+2. Adminul cauta utilizatorul dupa nume
+3. Adminul selecteaza utilizatorul si campul dorit de motificat
+4. Adminul valideaza noile date printr-un buton
+<br>
+Alternative Sequence: Adminul a introdus date invalide, caz in care valorile reale nu se vor modifica in baza de date
+</p>
+</li>
+</ul>
+<p class="home-paragraph">
+Also se pot face tournamente pe grupuri in 2 moduri:
+1. Fiecare grup face un set de intrebari si se face o medie a punctajelor membrilor participanti
+2. Se alege un test din intrebari predefinite si toti membrii fiecarui grup raspund simultan la intrebari.
+Aici se poate considera atat media punctajelor, cat si cel mai mare scor din toti participantii din fiecare grup
+Astfel de tournamente se fac pe baza invitatiilor. Invitatiile trebuie sa cuprinda ora, durata si eventual un numar maxim 
+sau minim de participanti
+Daca un student se afla in ambele grupuri care participa la tournament, atunci acesta in particular nu poate participa
+</p>
+
+<p class="home-paragraph">
+Tehnologie: C# & ASP.NET
+</p>
+</div>

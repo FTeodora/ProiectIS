@@ -1,0 +1,36 @@
+﻿@{
+    ViewData["Title"] = "Login";
+}
+<h1 class="display-4">Log in using an existing account</h1>
+
+<form>
+    <input id="username" name="username"/>
+    <input id="password" type="password" name="password"/>
+    <button id="login-btn">Login!</button>
+</form>
+
+<p> Don't have an account? <a href="/Register"> Create one instead</a> </p>
+
+<script>
+    var btn = document.querySelector("#login-btn");
+    btn.addEventListener("click", async e => {
+        e.preventDefault();
+        var uname = document.querySelector("#username").value;
+        var pass = document.querySelector("#password").value;
+        console.log(`${uname} cu parola ${pass}`)
+
+        var res = await fetch('/Home/LoginUser', {
+            method: "POST",
+            headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                username: uname,
+                password: pass
+            })
+        });
+
+        var obj = await res.json();
+        window.location.href = `/Home/${obj}`;
+        console.log(obj);
+    })
+</script>
+
