@@ -1,17 +1,22 @@
 ﻿@{
-    ViewData["Title"] = "Login";
+    ViewData["Title"] = "Register";
 }
-<h1 class="display-4">Log in using an existing account</h1>
+<h1 class="display-4">Enter information to create a new Account</h1>
 
 <form>
+    <label for="username">Username:</label>
     <input id="username" name="username"/>
     <br>
+    <label for="password">Password:</label>
     <input id="password" type="password" name="password"/>
     <br>
+    <label for="nume">Nume:</label>
     <input id="nume" name="nume"/>
     <br>
+    <label for="Prenume">Prenume:</label>
     <input id="prenume" name="prenume"/>
     <br>
+    <label for="eMail">e-mail:</label>
     <input id="eMail" name="eMail"/>
     <br>
     <button id="register-btn">Register!</button>
@@ -45,5 +50,4 @@
         console.log(obj);
     })
 </script>
-<p> Don't have an account? <a href="/Register"> Create one instead</a> </p>
 
