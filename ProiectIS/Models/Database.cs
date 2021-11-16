@@ -20,9 +20,10 @@ namespace ProiectIS.Models
             return res;
         }
 
-        public int insert(string uname, string pass)
+        public int insert(string uname, string pass, string nume, string prenume, string eMail)
         {
-            var cmd = new MySqlCommand($"insert into users values(0, '{uname}','{pass}')", conn);
+            var cmd = new MySqlCommand($"insert into users(username,pass,nume,prenume,eMail,rol)" +
+                $" values( '{uname}','{pass}','{nume}','{prenume}','{eMail}','STUDENT')", conn);
             var res = cmd.ExecuteNonQuery();
 
             return res;

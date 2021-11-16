@@ -5,7 +5,15 @@
 
 <form>
     <input id="username" name="username"/>
-    <input id="password" name="password"/>
+    <br>
+    <input id="password" type="password" name="password"/>
+    <br>
+    <input id="nume" name="nume"/>
+    <br>
+    <input id="prenume" name="prenume"/>
+    <br>
+    <input id="eMail" name="eMail"/>
+    <br>
     <button id="register-btn">Register!</button>
 </form>
 
@@ -15,6 +23,9 @@
         e.preventDefault();
         var uname = document.querySelector("#username").value;
         var pass = document.querySelector("#password").value;
+        var name = document.querySelector("#nume").value;
+        var fname = document.querySelector("#prenume").value;
+        var eMail = document.querySelector("#eMail").value;
         console.log(`${uname} cu parola ${pass}`)
 
         var res = await fetch('/Register/RegisterUser', {
@@ -22,7 +33,10 @@
             headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 username: uname,
-                password: pass
+                password: pass,
+                nume: name,
+                prenume: fname,
+                eMail: eMail
             })
         });
 

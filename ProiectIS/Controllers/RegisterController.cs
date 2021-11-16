@@ -15,6 +15,9 @@ namespace ProiectIS.Controllers
         {
             public string username { get; set; }
             public string password { get; set; }
+            public string nume { get; set; }
+            public string prenume { get; set; }
+            public string email { get; set; }
         }
 
         [HttpPost]
@@ -22,7 +25,7 @@ namespace ProiectIS.Controllers
         {
 
             var db = new Database();
-            var res = db.insert(user.username, user.password);
+            var res = db.insert(user.username, user.password,user.nume,user.prenume,user.email);
 
             return Ok(res);
         }
