@@ -46,24 +46,38 @@ namespace ProiectIS.Models
             var cmd = new MySqlCommand($"insert into "+tableName+fields +
                 $" values"+vals, conn);
             var res = cmd.ExecuteNonQuery();
-
+            Console.WriteLine("insert into " + tableName + fields +
+                $" values" + vals);
             return res;
         }
-        public int genericSelect(string tableName,string fields, String condition)
+        public List<List<Object>> genericSelect(string tableName,string fields, String condition)
         {
             MySqlCommand cmd;
             if (condition == null)
             {
-                cmd = new MySqlCommand($"select " + fields + " from " + tableName);
+                Console.WriteLine("select " + fields + " from " + tableName);
+                cmd = new MySqlCommand($"select " + fields + " from " + tableName,conn);
+                
             }
             else
             {
+                Console.WriteLine("select " + fields + " from " + tableName +
+                               $" WHERE " + condition);
                 cmd = new MySqlCommand($"select " + fields + " from " + tableName +
                                $" WHERE " + condition, conn);
+                
             }
-            var res = cmd.ExecuteNonQuery();
-
-            return res;
+            MySqlDataReader rdr = cmd.ExecuteReader();
+            List<List<Object>> values=new List<List<Object>>();
+            while (rdr.Read())
+            {
+                List<Object> columnVals = new List<Object>();
+                for (int i = 0; i < rdr.FieldCount; i++)
+                    columnVals.Add(rdr.GetValue(i));
+                values.Add(columnVals);
+            }
+            rdr.Close();
+            return values;
         }
         public String checkUser(string uname, string pass)
         {
@@ -73,6 +87,9 @@ namespace ProiectIS.Models
 
             return res;
         }
-
+        public void closeConnection()
+        {
+            conn.Close();
+        }
     }
 }

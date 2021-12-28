@@ -65,7 +65,7 @@ namespace ProiectIS.Controllers
         {
             var db = new Database();
             var res = db.checkUser(user.username, user.password);
-            
+            db.closeConnection();
             if(res.CompareTo("-1") == 0) {
                 return Ok("Index");
             }
