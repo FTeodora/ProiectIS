@@ -26,7 +26,6 @@ namespace ProiectIS.Controllers
 
             var db = new Database();
             var res = db.insert(user.username, user.password,user.nume,user.prenume,user.email);
-
             return Ok(res);
         }
 
