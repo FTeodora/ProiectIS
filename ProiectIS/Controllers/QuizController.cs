@@ -44,7 +44,7 @@ namespace ProiectIS.Controllers
         public IActionResult Index()
         {
             var db = new Database();
-            List<List<Object>> question = db.genericSelect("Question ORDER BY RAND() LIMIT 1", "*", null);
+            List<List<Object>> question = db.genericSelect("Question ORDER BY RAND() LIMIT 6", "*", null);
             db.closeConnection();
             List<Question> questions = new List<Question>();
             foreach (List<Object> var in question)
@@ -54,7 +54,6 @@ namespace ProiectIS.Controllers
             ViewData["questions"] = questions;
             if (HttpContext.Session.GetString("id") == null)
             {
-                Console.WriteLine("deci aici se duc...");
                 return Redirect("/Quiz");
             }
             
