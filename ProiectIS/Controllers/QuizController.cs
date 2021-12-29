@@ -6,13 +6,15 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ProiectIS.Models;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace ProiectIS.Controllers
 {
-
+    
     public class QuizController : Controller
     {
-        List<Question> questions = new List<Question>();
+        string jsonString;
         private readonly ILogger<QuizController> _logger;
 
         public QuizController(ILogger<QuizController> logger)
@@ -51,12 +53,13 @@ namespace ProiectIS.Controllers
             {
                 return Redirect("/Quiz");
             }
-
+            
             return View();
         }
-
+        
 
     }
+    [Serializable]
     public class Question
     {
 
