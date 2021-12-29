@@ -1,19 +1,21 @@
 ﻿@{
     ViewData["Title"] = "Login";
+    //var u = ((List<User>)ViewData["users"]);
 }
 <h1 class="display-4">Log in using an existing account</h1>
 
 <form>
     <label for="username">Username:</label>
-    <input id="username" name="username"/>
+    <input id="username" name="username" />
     <br>
     <label for="password">Password:</label>
-    <input id="password" type="password" name="password"/>
+    <input id="password" type="password" name="password" />
     <br>
     <button id="login-btn">Login!</button>
 </form>
 
 <p> Don't have an account? <a href="/Register"> Create one instead</a> </p>
+
 
 <script>
     var btn = document.querySelector("#login-btn");
@@ -37,4 +39,3 @@
         console.log(obj);
     })
 </script>
-

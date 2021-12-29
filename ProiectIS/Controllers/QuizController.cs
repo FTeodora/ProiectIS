@@ -9,7 +9,7 @@ using ProiectIS.Models;
 
 namespace ProiectIS.Controllers
 {
-    
+
     public class QuizController : Controller
     {
         List<Question> questions = new List<Question>();
@@ -20,11 +20,6 @@ namespace ProiectIS.Controllers
             _logger = logger;
         }
 
-        [HttpGet]
-        public IActionResult Login()
-        {
-            return View();
-        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
@@ -56,10 +51,10 @@ namespace ProiectIS.Controllers
             {
                 return Redirect("/Quiz");
             }
-            
+
             return View();
         }
-        
+
 
     }
     public class Question

@@ -1,12 +1,11 @@
-﻿
-@using ProiectIS.Controllers
+﻿@using ProiectIS.Controllers
 @{
     ViewData["Title"] = "Quiz Time!";
-    // Layout = "~/Views/Layout.cshtml"; 
+    // Layout = "~/Views/Layout.cshtml";
     var i = 0;
-    var q=((List<Question>)ViewData["questions"])[0];
+    var q = ((List<Question>)ViewData["questions"])[0];
     var time = q.timeout;
-    List<string>opt=q.options;
+    List<string> opt = q.options;
     var totalScore = 0;
     var questionScore = 0;
     var maxQuestions = 3;
@@ -15,27 +14,28 @@
 <p id="seconds"></p>
 
 <script>
-var counter=@time;
-var counterSet
-var nextCountdown=0;
-function refreshCounter() {
-    const element = document.getElementById("seconds");
-    element.innerHTML =counter;
-  
-    if(counter>0)
-        counter--;
-}
+    var counter=@time;
+    var counterSet
+    var nextCountdown=0;
+    function refreshCounter() {
+        const element = document.getElementById("seconds");
+        element.innerHTML =counter;
 
-setInterval(refreshCounter, 1000);
+        if(counter>0)
+            counter--;
+    }
+
+    setInterval(refreshCounter, 1000);
 </script>
 
 <div class="d-grid gap-2 col-6 mx-auto">
-        
-        <p>@q.enunt</p>
-  <button class="btn btn-primary me-md-2 btn-lg" type="button">@opt[0]</button>
-  <button class="btn btn-primary btn-lg" type="button">@opt[1]</button>
-   <button class="btn btn-primary me-md-2 btn-lg" type="button">@opt[2]</button>
-  <button class="btn btn-primary btn-lg" type="button">@opt[3]</button>
-    </div>
+
+    <p>@q.enunt</p>
+    <button class="btn btn-primary me-md-2 btn-lg" type="button">@opt[0]</button>
+    <button class="btn btn-primary btn-lg" type="button">@opt[1]</button>
+    <button class="btn btn-primary me-md-2 btn-lg" type="button">@opt[2]</button>
+    <button class="btn btn-primary btn-lg" type="button">@opt[3]</button>
+
+</div>
 
 
