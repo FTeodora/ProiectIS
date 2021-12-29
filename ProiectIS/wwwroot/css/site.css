@@ -8,15 +8,46 @@ a.navbar-brand {
 }
 
 /* Provide sufficient contrast against white background */
+:root {
+    --btn: rgb(0, 153, 255);
+    --btn-disabled: rgb(122, 202, 255);
+    --wrong: red;
+    --correct: green;
+}
+
 a {
   color: #0366d6;
 }
+.btn-grid {
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    gap: 5px;
+    margin: 10px;
+}
 
 .btn-primary {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+    color: #fff;
+    background-color:var(--btn);
+    outline: none;
+    margin:10px;
+    padding:10px;
 }
+
+.btn {
+    color: #fff;
+    background-color: var(--btn);
+    outline: none;
+    margin: 6px;
+    padding: 10px;
+}
+    .btn.correct {
+        background-color: var(--correct);
+        pointer-events: none;
+    }
+    .btn.wrong {
+        background-color: var(--wrong);
+        pointer-events: none;
+    }
 
 .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
   color: #fff;
@@ -73,4 +104,7 @@ body {
 .home-paragraph{
     text-align:left;
     font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+.hide {
+    display: none;
 }
