@@ -1,75 +1,41 @@
-﻿@{
+﻿
+@using ProiectIS.Controllers
+@{
     ViewData["Title"] = "Quiz Time!";
-   // Layout = "~/Views/Layout.cshtml"; 
+    // Layout = "~/Views/Layout.cshtml"; 
+    var i = 0;
+    var q=((List<Question>)ViewData["questions"])[0];
+    var time = q.timeout;
+    List<string>opt=q.options;
+    var totalScore = 0;
+    var questionScore = 0;
+    var maxQuestions = 3;
 }
 
-<!DOCTYPE HTML>
-<html>
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<style>
-p {
-  text-align: center;
-  font-size: 60px;
-  margin-top: 0px;
-}
-</style>
-</head>
-<body>
+<p id="seconds"></p>
 
-<p id="demo"></p>
-
-<!-- Timer -->
 <script>
-// Set the date we're counting down to
-var countDownDate = new Date("Jan 5, 2022 15:37:25").getTime();
+var counter=@time;
+var counterSet
+var nextCountdown=0;
+function refreshCounter() {
+    const element = document.getElementById("seconds");
+    element.innerHTML =counter;
+  
+    if(counter>0)
+        counter--;
+}
 
-// Update the count down every 1 second
-var x = setInterval(function() {
-
-  // Get today's date and time
-  var now = new Date().getTime();
-    
-  // Find the distance between now and the count down date
-  var distance = countDownDate - now;
-    
-  // Time calculations for days, hours, minutes and seconds
-  var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-  var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-  var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-    
-  // Output the result in an element with id="demo"
-  document.getElementById("demo").innerHTML = days + "d " + hours + "h "
-  + minutes + "m " + seconds + "s ";
-    
-  // If the count down is over, write some text 
-  if (distance < 0) {
-    clearInterval(x);
-    document.getElementById("demo").innerHTML = "EXPIRED";
-  }
-}, 1000);
+setInterval(refreshCounter, 1000);
 </script>
 
-<!-- Intrebari -->
-
-<div id="quiz"></div>
-<button id="submit">Submit Quiz</button>
-<div id="results"></div>
-
-
-
-
-<!-- Butoanele pentru raspunsuri -->
-
 <div class="d-grid gap-2 col-6 mx-auto">
-  <button class="btn btn-primary me-md-2 btn-lg" type="button">Button</button>
-  <button class="btn btn-primary btn-lg" type="button">Button</button>
-   <button class="btn btn-primary me-md-2 btn-lg" type="button">Button</button>
-  <button class="btn btn-primary btn-lg" type="button">Button</button>
-</div>
-
-</body>
-</html>
+        
+        <p>@q.enunt</p>
+  <button class="btn btn-primary me-md-2 btn-lg" type="button">@opt[0]</button>
+  <button class="btn btn-primary btn-lg" type="button">@opt[1]</button>
+   <button class="btn btn-primary me-md-2 btn-lg" type="button">@opt[2]</button>
+  <button class="btn btn-primary btn-lg" type="button">@opt[3]</button>
+    </div>
 
 
