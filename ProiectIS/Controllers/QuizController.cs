@@ -11,12 +11,11 @@ using System.Text.Json.Serialization;
 
 namespace ProiectIS.Controllers
 {
-    
+
     public class QuizController : Controller
     {
         string jsonString;
         int totalScore=0;
-       
         private readonly ILogger<QuizController> _logger;
 
         public QuizController(ILogger<QuizController> logger)
@@ -27,15 +26,15 @@ namespace ProiectIS.Controllers
         {
             return View();
         }
-        
+
         public IActionResult MyQuizes()
         {
-            Database db=new Database();
+            Database db = new Database();
             if (HttpContext.Session.GetString("id") == null)
                 return Redirect("Home/Login");
-            List<List<Object>> res=db.genericSelect("savedQuiz", "*", "authorID=" + HttpContext.Session.GetString("id"));
+            List<List<Object>> res = db.genericSelect("savedQuiz", "*", "authorID=" + HttpContext.Session.GetString("id"));
             List<SavedQuiz> saved = new List<SavedQuiz>();
-            foreach(var i in res)
+            foreach (var i in res)
             {
                 saved.Add(new SavedQuiz(i));
             }
@@ -48,7 +47,7 @@ namespace ProiectIS.Controllers
             Database db = new Database();
             if (HttpContext.Session.GetString("id") == null)
                 return Redirect("Home/Login");
-            List<List<Object>> res = db.genericSelect("question INNER JOIN quizQuestions ON question.id=quizQuestions.questionID INNER JOIN savedQuiz ON savedQuiz.id=quizQuestions.quizID AND savedQuiz.ID=" + quizID, "*",null);
+            List<List<Object>> res = db.genericSelect("question INNER JOIN quizQuestions ON question.id=quizQuestions.questionID INNER JOIN savedQuiz ON savedQuiz.id=quizQuestions.quizID AND savedQuiz.ID=" + quizID, "*", null);
             List<Question> saved = new List<Question>();
             foreach (var i in res)
             {
@@ -56,6 +55,7 @@ namespace ProiectIS.Controllers
             }
             jsonString = JsonSerializer.Serialize(saved);
             ViewData["json"] = jsonString;
+
 
             return View();
         }
@@ -68,7 +68,7 @@ namespace ProiectIS.Controllers
         [HttpGet]
         public IActionResult Test()
         {
-            var db = new Database();
+            var db = Database.Instance;
             ViewBag.mesaj = db.test();
             return View();
         }
@@ -85,9 +85,8 @@ namespace ProiectIS.Controllers
             {
                 return Redirect("/Quiz");
             }
-            var db = new Database();
+            var db = Database.Instance;
             List<List<Object>> question = db.genericSelect("Question ORDER BY RAND() LIMIT 6", "*", null);
-            db.closeConnection();
             List<Question> questions = new List<Question>();
             foreach (List<Object> var in question)
             {
@@ -95,8 +94,10 @@ namespace ProiectIS.Controllers
             }
             ViewData["questions"] = questions;
             ViewData["scor"] = 0;
+
             jsonString = JsonSerializer.Serialize(questions);
             ViewData["json"] = jsonString;
+
             return View();
         }
         [HttpPost]
@@ -151,7 +152,7 @@ namespace ProiectIS.Controllers
     public class Score
     {
         public int score { get; set; }
-       
+
 
     }*/
     }

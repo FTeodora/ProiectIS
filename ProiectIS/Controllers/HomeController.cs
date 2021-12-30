@@ -53,7 +53,7 @@ namespace ProiectIS.Controllers
         [HttpGet]
         public IActionResult Test()
         {
-            var db = new Database();
+            var db = Database.Instance;
             ViewBag.mesaj = db.test();
             return View();
         }
@@ -110,9 +110,9 @@ namespace ProiectIS.Controllers
         public async Task<IActionResult> LoginUser([FromBody] UserLoginClass user)
         {
             Console.WriteLine("Inceput");
-            var db = new Database();
+            var db = Database.Instance;
             List<List<Object>> utilizator = db.genericSelect("users", "*", " username='" + user.username + "' and pass='" + user.password + "';");
-            db.closeConnection();
+
             Console.WriteLine("SF");
 
             List<User> users = new List<User>();
@@ -135,9 +135,10 @@ namespace ProiectIS.Controllers
             HttpContext.Session.SetString("Nume", res.nume);
             HttpContext.Session.SetString("Prenume", res.prenume);
             HttpContext.Session.SetString("Rol", res.rol);
+            HttpContext.Session.SetString("Email", res.email);
 
             if (res.rol.CompareTo("PROFESOR") == 0)
-                return Ok("Homepage");
+                return Ok("/Profesor");
             else
                 return Ok("/Student");
 
@@ -149,6 +150,8 @@ namespace ProiectIS.Controllers
         public async Task<IActionResult> LogoutUser()
         {
             HttpContext.Session.Clear();
+            var db = Database.Instance;
+            db.closeConnection();
             return Redirect("/Home");
         }
     }
