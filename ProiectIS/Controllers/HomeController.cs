@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ProiectIS.Models;
+using System.Web;
 
 namespace ProiectIS.Controllers
 {
@@ -13,6 +14,7 @@ namespace ProiectIS.Controllers
     {
 
         List<User> users = new List<User>();
+        // User currentUser = new User();
         private readonly ILogger<HomeController> _logger;
 
         public HomeController(ILogger<HomeController> logger)
@@ -28,16 +30,10 @@ namespace ProiectIS.Controllers
         [HttpGet]
         public IActionResult Login()
         {
-            var db = new Database();
-            List<List<Object>> user = db.genericSelect("users", "*", null);
-            db.closeConnection();
-            List<User> users = new List<User>();
 
-            foreach (List<Object> var in user)
-            {
-                users.Add(new User(var));
-            }
-            ViewData["users"] = users;
+
+
+            //ViewData["users"] = users[0];
 
             if (HttpContext.Session.GetString("id") == null)
             {
@@ -72,6 +68,11 @@ namespace ProiectIS.Controllers
             return View();
         }
 
+        public class UserLoginClass
+        {
+            public string username { get; set; }
+            public string password { get; set; }
+        }
 
 
         public class User
@@ -88,7 +89,6 @@ namespace ProiectIS.Controllers
             public string email { get; set; } = null;
 
             public string rol { get; set; } = null;
-
 
             public User(List<Object> source)
             {
@@ -107,22 +107,42 @@ namespace ProiectIS.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> LoginUser([FromBody] User user)
+        public async Task<IActionResult> LoginUser([FromBody] UserLoginClass user)
         {
+            Console.WriteLine("Inceput");
+            var db = new Database();
+            List<List<Object>> utilizator = db.genericSelect("users", "*", " username='" + user.username + "' and pass='" + user.password + "';");
+            db.closeConnection();
+            Console.WriteLine("SF");
 
-            var res = users.Find(x => x.username == user.username && x.password == user.password);
+            List<User> users = new List<User>();
 
-            if (res.id.CompareTo("-1") == 0)
+            foreach (List<Object> var in utilizator)
             {
-                return Ok("Quiz");
+                users.Add(new User(var));
             }
 
-            // HttpContext.Session.SetString("id", res.id);
+            var res = users[0];
 
-            if (res.rol.CompareTo("profesor") == 0)
+            Console.WriteLine(res);
+
+            if (res.id.CompareTo(-1) == 0)
+            {
+                return Ok("Homepage");
+            }
+
+            HttpContext.Session.SetString("id", res.id.ToString());
+            HttpContext.Session.SetString("Nume", res.nume);
+            HttpContext.Session.SetString("Prenume", res.prenume);
+            HttpContext.Session.SetString("Rol", res.rol);
+
+            if (res.rol.CompareTo("PROFESOR") == 0)
                 return Ok("Homepage");
             else
-                return Ok("Student");
+                return Ok("/Student");
+
+            return Ok("Homepage");
+
         }
 
         [HttpPost]

@@ -23,6 +23,10 @@
         e.preventDefault();
         var uname = document.querySelector("#username").value;
         var pass = document.querySelector("#password").value;
+
+       // Session["Uname"]=uname; //datele de logare scrise de utilizator
+       // Session["Pass"]=pass;
+
         console.log(`${uname} cu parola ${pass}`)
 
         var res = await fetch('/Home/LoginUser', {
@@ -34,8 +38,10 @@
             })
         });
 
+      //  console.log(`${Session["Nume"]}`)
+
         var obj = await res.json();
-        window.location.href = `/Home/${obj}`;
+        window.location.href = `${obj}`;
         console.log(obj);
     })
 </script>
