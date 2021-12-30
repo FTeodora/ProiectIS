@@ -58,12 +58,12 @@ namespace ProiectIS.Controllers
 
             return View();
         }
-                [HttpPost]
+        [HttpPost]
         public async void UpdateScore([FromBody] Score s)
         {
            
             ViewData["scor"] = s.score;
-            Finished();
+      
         }
 
 
@@ -71,23 +71,6 @@ namespace ProiectIS.Controllers
     public class Score
     {
         public int score { get; set; }
-
-    }
-    [HttpPost]
-    public async void UpdateScore([FromBody] Score s)
-    {
-
-        ViewData["scor"] = s.score;
-        Finished();
-    }
-
-
-}
-public class Score
-{
-    public int score { get; set; }
-
-}
        
 
     }
