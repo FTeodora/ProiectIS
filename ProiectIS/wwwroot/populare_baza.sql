@@ -12,3 +12,4 @@ values(1,"Biology","How many legs does a spider have?","30","8","9","6","10",tru
 (1,"Biology","What do bees make?","30","Honey","Anthills","Webs","Water",true),
 (1,"Culture","What kind of cat is considered bad luck?","30","Black cats","White cats","All cats","Ginger cats",true),
 (1,"Biology","Which is the fastest land animal?","30","Ceetah","Lion","Giraffe","Puma",true);
+insert into Users(username,pass,nume,prenume,eMail,rol) values('profesor','profesor','domnul','profesor','prof@gmail.com','PROFESOR');
