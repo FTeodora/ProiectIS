@@ -22,6 +22,7 @@ namespace ProiectIS.Controllers
             _logger = logger;
         }
 
+        
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
@@ -49,14 +50,28 @@ namespace ProiectIS.Controllers
                 questions.Add(new Question(var));
             }
             ViewData["questions"] = questions;
+            ViewData["scor"] = 0;
             if (HttpContext.Session.GetString("id") == null)
             {
                 return Redirect("/Quiz");
             }
-            
+
             return View();
         }
-        
+        [HttpPost]
+        public async void UpdateScore([FromBody] Score s)
+        {
+           
+            ViewData["scor"] = s.score;
+      
+        }
+
+
+    }
+    public class Score
+    {
+        public int score { get; set; }
+       
 
     }
     [Serializable]
