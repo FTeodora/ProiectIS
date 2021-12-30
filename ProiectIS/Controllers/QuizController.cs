@@ -11,7 +11,7 @@ using System.Text.Json.Serialization;
 
 namespace ProiectIS.Controllers
 {
-    
+
     public class QuizController : Controller
     {
         string jsonString;
@@ -22,7 +22,7 @@ namespace ProiectIS.Controllers
             _logger = logger;
         }
 
-        
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
@@ -61,9 +61,9 @@ namespace ProiectIS.Controllers
         [HttpPost]
         public async void UpdateScore([FromBody] Score s)
         {
-           
+
             ViewData["scor"] = s.score;
-      
+
         }
 
 
@@ -71,7 +71,7 @@ namespace ProiectIS.Controllers
     public class Score
     {
         public int score { get; set; }
-       
+
 
     }
     [Serializable]
