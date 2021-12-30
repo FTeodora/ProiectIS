@@ -1,0 +1,16 @@
+﻿@{
+    ViewData["Title"] = "Create a Group!";
+    // Layout = "~/Views/Layout.cshtml";
+}
+
+<form method="post" action="/Profesor/CreateGroup">
+
+    <label for="nume">Group Name:</label>
+    <input id="nume" name="nume" />
+    <br>
+    <label for="descriere">Description:</label>
+    <input id="descriere" name="descriere" />
+    <br>
+    <input type="submit" value="Create Group!" />
+
+</form>

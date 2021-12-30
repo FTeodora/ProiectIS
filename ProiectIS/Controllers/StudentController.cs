@@ -17,5 +17,16 @@ namespace ProiectIS.Controllers
             return View();
         }
 
+        public IActionResult ViewPersonalData()
+        {
+
+            ViewData["Email"] = HttpContext.Session.GetString("Email");
+            ViewData["Nume"] = HttpContext.Session.GetString("Nume");
+            ViewData["Prenume"] = HttpContext.Session.GetString("Prenume");
+            ViewData["Rol"] = HttpContext.Session.GetString("Rol");
+
+            return View("StudentProfile");
+        }
+
     }
 }

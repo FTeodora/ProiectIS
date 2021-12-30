@@ -6,7 +6,20 @@ namespace ProiectIS.Models
     public class Database
     {
         MySqlConnection conn;
-        public Database()
+
+        private static Database? instance;
+
+        public static Database Instance
+        {
+            get
+            {
+                if (Database.instance == null)
+                    Database.instance = new Database();
+                return Database.instance;
+            }
+
+        }
+        private Database()
         {
             conn = new MySqlConnection("Server=127.0.0.1;Database=kohaat;Uid=root;Pwd=root;");
             conn.Open();
@@ -22,42 +35,55 @@ namespace ProiectIS.Models
 
         public int insert(string uname, string pass, string nume, string prenume, string eMail)
         {
-            
+
             var cmd = new MySqlCommand($"insert into users(username,pass,nume,prenume,eMail,rol)" +
                 $" values( '{uname}','{pass}','{nume}','{prenume}','{eMail}','STUDENT')", conn);
             var res = cmd.ExecuteNonQuery();
 
             return res;
         }
-        public int genericInsert(string tableName,List<string>fieldNames,List<Object> values)
+        public class DateReturn
         {
+            public int noRows { get; set; }
+            public long lastID { get; set; }
+        }
+
+        public DateReturn genericInsert(string tableName, List<string> fieldNames, List<Object> values)
+        {
+            DateReturn ret = new DateReturn();
+
             string fields = "(";
             foreach (var field in fieldNames)
             {
-                fields += field+",";
+                fields += field + ",";
             }
             fields = fields.Remove(fields.Length - 1, 1) + ")";
             string vals = "(";
-            foreach(var value in values)
+            foreach (var value in values)
             {
-                vals += value.ToString() + ",";
+                vals += "'" + value.ToString() + "'" + ",";
             }
             vals = vals.Remove(vals.Length - 1, 1) + ")";
-            var cmd = new MySqlCommand($"insert into "+tableName+fields +
-                $" values"+vals, conn);
+            var cmd = new MySqlCommand($"insert into " + tableName + fields +
+                $" values" + vals, conn);
             var res = cmd.ExecuteNonQuery();
+
+            ret.noRows = res;
+            ret.lastID = cmd.LastInsertedId;
+
             Console.WriteLine("insert into " + tableName + fields +
                 $" values" + vals);
-            return res;
+            return ret;
         }
-        public List<List<Object>> genericSelect(string tableName,string fields, String condition)
+
+        public List<List<Object>> genericSelect(string tableName, string fields, String condition)
         {
             MySqlCommand cmd;
             if (condition == null)
             {
                 Console.WriteLine("select " + fields + " from " + tableName);
-                cmd = new MySqlCommand($"select " + fields + " from " + tableName,conn);
-                
+                cmd = new MySqlCommand($"select " + fields + " from " + tableName, conn);
+
             }
             else
             {
@@ -65,10 +91,10 @@ namespace ProiectIS.Models
                                $" WHERE " + condition);
                 cmd = new MySqlCommand($"select " + fields + " from " + tableName +
                                $" WHERE " + condition, conn);
-                
+
             }
             MySqlDataReader rdr = cmd.ExecuteReader();
-            List<List<Object>> values=new List<List<Object>>();
+            List<List<Object>> values = new List<List<Object>>();
             while (rdr.Read())
             {
                 List<Object> columnVals = new List<Object>();

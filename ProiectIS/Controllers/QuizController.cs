@@ -15,7 +15,7 @@ namespace ProiectIS.Controllers
     public class QuizController : Controller
     {
         string jsonString;
-        int totalScore=0;
+        int totalScore = 0;
         private readonly ILogger<QuizController> _logger;
 
         public QuizController(ILogger<QuizController> logger)
@@ -34,7 +34,7 @@ namespace ProiectIS.Controllers
         [HttpGet]
         public IActionResult Test()
         {
-            var db = new Database();
+            var db = Database.Instance;
             ViewBag.mesaj = db.test();
             return View();
         }
@@ -51,9 +51,8 @@ namespace ProiectIS.Controllers
             {
                 return Redirect("/Quiz");
             }
-            var db = new Database();
+            var db = Database.Instance;
             List<List<Object>> question = db.genericSelect("Question ORDER BY RAND() LIMIT 6", "*", null);
-            db.closeConnection();
             List<Question> questions = new List<Question>();
             foreach (List<Object> var in question)
             {
@@ -61,8 +60,10 @@ namespace ProiectIS.Controllers
             }
             ViewData["questions"] = questions;
             ViewData["scor"] = 0;
+
             jsonString = JsonSerializer.Serialize(questions);
             ViewData["json"] = jsonString;
+
             return View();
         }
         /*[HttpPost]
