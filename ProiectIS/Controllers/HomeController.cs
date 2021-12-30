@@ -35,7 +35,7 @@ namespace ProiectIS.Controllers
 
             //ViewData["users"] = users[0];
 
-            if (HttpContext.Session.GetString("id") != null)
+            if (HttpContext.Session.GetString("id") == null)
             {
                 return Redirect("/Home");
             }

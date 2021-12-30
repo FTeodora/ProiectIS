@@ -3,163 +3,163 @@
     ViewData["Title"] = "Quiz Time!";
     // Layout = "~/Views/Layout.cshtml";
 }
-<body onload="initialize()">
-    <p id="seconds" style="font-size:20px"></p>
-    <div class="d-grid gap-2 col-6 mx-auto" id="question-container">
+ <body onload="initialize()"> 
+<p id="seconds" style="font-size:20px"></p>
+<div class="d-grid gap-2 col-6 mx-auto" id="question-container">
         <div id="question" style="font-size:23px"></div>
-
-        <div id="answer-buttons" class="btn-grid">
-            <button class="btn" type="button" id="1"></button>
-            <button class="btn" type="button" id="2"></button>
-            <button class="btn" type="button" id="3"></button>
-            <button class="btn" type="button" id="4"></button>
-        </div>
-        <div id="score"></div>
-        <div id="yourAnswer"></div>
-        <div id="untilNext"></div>
-
+        
+ <div id="answer-buttons" class="btn-grid"> 
+ <button class="btn" type="button" id="1"></button>
+  <button class="btn" type="button" id="2"></button>
+   <button class="btn" type="button" id="3"></button>
+  <button class="btn" type="button" id="4"></button></div>
+  <div id="score"></div>
+   <div id="yourAnswer"></div>
+  <div id="untilNext"></div>
+ 
     </div>
 </body>
 
 <script>
-        var myVar = '@ViewData["json"]';
-        console.log(myVar);
-        myVar = myVar.replace(/&quot;/g, '"');
-        var questionList = JSON.parse(myVar.toString());
-        var questions;
+    var myVar = '@ViewData["json"]';
+    console.log(myVar);
+    myVar = myVar.replace(/&quot;/g, '"');
+    var questionList = JSON.parse(myVar.toString());
+    var questions;
 
-        const questionElement= document.getElementById('question');
-        const answerButtonsElement= document.getElementById('answer-buttons');
-        const scoreElement= document.getElementById('score');
-        const nextTimeoutElement= document.getElementById('untilNext');
-        const yourAnswerElement= document.getElementById('yourAnswer');
-        var currentQuestionIndex=1;
-        var serializer;
-        var counter= 10;
-        var maxTime=10;
-        var currentScore=0;
-        var selectedAnsw;
-        var nextTimeout=10;
+    const questionElement= document.getElementById('question');
+    const answerButtonsElement= document.getElementById('answer-buttons');
+    const scoreElement= document.getElementById('score');
+    const nextTimeoutElement= document.getElementById('untilNext');
+    const yourAnswerElement= document.getElementById('yourAnswer');
+    var currentQuestionIndex=1;
+    var serializer;
+    var counter= 10;
+    var maxTime=10;
+    var currentScore=0;
+    var selectedAnsw;
+    var nextTimeout=10;
 
-        function showQuestion(question){
-            scoreElement.innerText="Score: "+currentScore;
-            questionElement.innerText=currentQuestionIndex+". "+question.enunt;
-            var opts=question.options;
-            var value=0;
-            opts.forEach( (answer) => {
-            const button=document.createElement('button')
-            button.classList.add('btn')
-            button.innerText=answer
-            button.addEventListener('click',selectAnswer)
-            button.id=value.toString();
-
-            value++;
-            answerButtonsElement.appendChild(button)
-            })
-
-        }
-
-    function selectAnswer(e){
-        const selectedButton=e.target;
-        selectedAnsw=parseInt(e.target.id);
-        if(parseInt(e.target.id)==questionList[currentQuestionIndex-1].correctAnsw){
-            console.log("Correct!")
-            currentScore+=Math.floor((1000*counter)/maxTime);
-
-        }
-        Array.from(answerButtonsElement.children).forEach(button => {
-            button.disabled=true
-            })
-
-    }
-    function setNextQuestion() {
-      resetState()
-      selectedAnsw=-1;
-      counter=questionList[currentQuestionIndex-1].timeout;
-      maxTime=questionList[currentQuestionIndex-1].timeout;
-      showQuestion(questionList[currentQuestionIndex-1])
-     nextTimeoutElement.classList.add('hide')
-      yourAnswerElement.classList.add('hide')
-    }
-    function resetState(){
-        document.body.classList.remove('correct')
-      document.body.classList.remove('wrong')
-    while (answerButtonsElement.firstChild) {
-        answerButtonsElement.removeChild(answerButtonsElement.firstChild)
-      }
-    }
-    function advanceNext(){
-        nextTimeout=10;
-         if(currentQuestionIndex<6){
-                    currentQuestionIndex++;
-                setNextQuestion();
-         }
-         else{
-
-         updateScore()
-         }
-    }
-    function refreshCounter() {
-        const element = document.getElementById("seconds");
-        element.innerHTML =counter;
-
-        if(counter>0)
-            counter--;
-             else
-            {
-                if(nextTimeout==10)
-                    revealCorrect();
-            nextTimeoutElement.innerText=nextTimeout;
-              if(nextTimeout>0)
-                 nextTimeout--;
-              else
-                advanceNext();
-
-            }
-
-    }
-    function revealCorrect(){
-        var currBtn=0;
-        var correct=questionList[currentQuestionIndex-1].correctAnsw;
+    function showQuestion(question){
         scoreElement.innerText="Score: "+currentScore;
-        Array.from(answerButtonsElement.children).forEach(button => {
-            if(currBtn==correct)
-                button.classList.add('correct')
-            else
-                button.classList.add('wrong')
-            currBtn++;
-            })
-            nextTimeoutElement.classList.remove('hide')
-            if(selectedAnsw>=0)
-                        {
-                            yourAnswerElement.classList.remove('hide')
-                            yourAnswerElement.innerText="Your answer: "+questionList[currentQuestionIndex-1].options[selectedAnsw]
-                        }
+        questionElement.innerText=currentQuestionIndex+". "+question.enunt;
+        var opts=question.options;
+        var value=0;
+        opts.forEach( (answer) => {
+        const button=document.createElement('button')
+        button.classList.add('btn')
+        button.innerText=answer
+        button.addEventListener('click',selectAnswer)
+        button.id=value.toString();
+
+        value++;
+        answerButtonsElement.appendChild(button)
+        })
+
     }
 
-    function initialize(){
-        var currentQuestionIndex=0;
-        currentScore=0;
-        setNextQuestion();
-        interval=setInterval(refreshCounter, 1000);
+function selectAnswer(e){
+    const selectedButton=e.target;
+    selectedAnsw=parseInt(e.target.id);
+    if(parseInt(e.target.id)==questionList[currentQuestionIndex-1].correctAnsw){
+        console.log("Correct!")
+        currentScore+=Math.floor((1000*counter)/maxTime);
+        
     }
+    Array.from(answerButtonsElement.children).forEach(button => {
+        button.disabled=true
+        })
 
-    function updateScore() {
-        console.log(JSON.stringify(currentScore));
-        console.log(currentScore.toString());
-        $.ajax({
-            type: "POST",
-            url: '/Quiz/UpdateScore',
-            data: JSON.stringify({score : currentScore}),
-            contentType: "application/json",
-            //dataType: "json",
-            success: function() {
-                console.log('mergeee');
-                window.location.href = `/Quiz/Finished`
-            },
-            error: function (e) {
-                console.log(e);
-            }
-        });
-    }
+
+}
+function setNextQuestion() {
+  resetState()
+  selectedAnsw=-1;
+  counter=questionList[currentQuestionIndex-1].timeout;
+  maxTime=questionList[currentQuestionIndex-1].timeout;
+  showQuestion(questionList[currentQuestionIndex-1])
+ nextTimeoutElement.classList.add('hide')
+  yourAnswerElement.classList.add('hide')
+}
+function resetState(){
+    document.body.classList.remove('correct')
+  document.body.classList.remove('wrong')
+while (answerButtonsElement.firstChild) {
+    answerButtonsElement.removeChild(answerButtonsElement.firstChild)
+  }
+}
+function advanceNext(){
+    nextTimeout=10;
+     if(currentQuestionIndex<6){
+                currentQuestionIndex++;
+            setNextQuestion();
+     }
+     else{
+         
+     updateScore()
+     window.location.href = `/Quiz/Finished`
+     }
+}
+function refreshCounter() {
+    const element = document.getElementById("seconds");
+    element.innerHTML =counter;
+  
+    if(counter>0)
+        counter--;
+         else
+        {
+            if(nextTimeout==10)
+                revealCorrect();
+        nextTimeoutElement.innerText=nextTimeout;
+          if(nextTimeout>0)
+             nextTimeout--;
+          else
+            advanceNext();
+             
+        }
+   
+}
+function revealCorrect(){
+    var currBtn=0;
+    var correct=questionList[currentQuestionIndex-1].correctAnsw;
+    scoreElement.innerText="Score: "+currentScore;
+    Array.from(answerButtonsElement.children).forEach(button => {
+        if(currBtn==correct)
+            button.classList.add('correct')
+        else
+            button.classList.add('wrong')
+        currBtn++;
+        })
+        nextTimeoutElement.classList.remove('hide')
+        if(selectedAnsw>=0)
+                    {
+                        yourAnswerElement.classList.remove('hide')
+                        yourAnswerElement.innerText="Your answer: "+questionList[currentQuestionIndex-1].options[selectedAnsw]
+                    }
+}
+function initialize(){
+    var currentQuestionIndex=0;
+    currentScore=0;
+    setNextQuestion();
+    interval=setInterval(refreshCounter, 1000);
+}
+function updateScore() {
+    console.log(JSON.stringify(currentScore));
+    console.log(currentScore.toString())
+         $.ajax({
+         type: "POST",
+         url: 'Quiz/UpdateScore',
+         data: JSON.stringify({score : currentScore}),
+         contentType: "application/json; ",
+         dataType: "json", 
+    success: function() {
+        
+        },
+         error: function (e) {
+             console.log(e);
+         }
+     });
+     
+     
+}
 </script>
