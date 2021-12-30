@@ -45,3 +45,11 @@ create table Question(id bigint auto_increment primary key,
                     
 );
 
+create table savedQuiz(id bigint auto_increment primary key,
+authorID bigint,
+title varchar(50),
+FOREIGN KEY (authorID) REFERENCES profesor(id));
+create table quizQuestions(quizID bigint,questionID bigint,
+FOREIGN KEY (quizID) REFERENCES savedQuiz(id),
+FOREIGN KEY (questionID) REFERENCES question(id));
+

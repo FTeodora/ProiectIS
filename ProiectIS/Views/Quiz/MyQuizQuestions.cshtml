@@ -1,0 +1,31 @@
+﻿
+@{
+    ViewData["Title"] = "MyQuizQuestions";
+}
+
+<h1>Questions</h1>
+<body onload="initialize()"><div id="questions"></div></body>
+<script>
+    var myVar = '@ViewData["json"]';
+      var questionList;
+    myVar = myVar.replace(/&quot;/g, '"');
+     const listElement=document.getElementById("questions");
+     function initialize(){
+         questionList = JSON.parse(myVar.toString());
+   
+            questionList.forEach((i)=>createBox(i));
+     }
+    function createBox(question){
+        const newDiv=document.createElement('div');
+        newDiv.classList.add('question-box');
+        var options="\nOptions:\n";
+        for(var i=0;i<4;i++)
+            if(i!=question.correctAnsw)
+            options+=question.options[i]+"\n";
+        var correct="\nCorrect: "+question.options[question.correctAnsw];
+        newDiv.innerText=question.enunt+options+correct;
+
+        listElement.appendChild(newDiv);
+        listElement.appendChild(document.createElement('br'));
+    }
+</script>

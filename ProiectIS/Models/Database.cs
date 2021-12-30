@@ -50,6 +50,16 @@ namespace ProiectIS.Models
                 $" values" + vals);
             return res;
         }
+        public int genericInsertReturnLast(string tableName, List<string> fieldNames, List<Object> values)
+        {
+            genericInsert(tableName,fieldNames,values);
+            var cmd2 = new MySqlCommand($"SELECT last_insert_item()", conn);
+            MySqlDataReader rdr = cmd2.ExecuteReader();
+            var res = 0;
+            while (rdr.Read())
+                res = (int)rdr[0];
+            return res;
+        }
         public List<List<Object>> genericSelect(string tableName,string fields, String condition)
         {
             MySqlCommand cmd;

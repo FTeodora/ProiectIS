@@ -13,3 +13,5 @@ values(1,"Biology","How many legs does a spider have?","30","8","9","6","10",tru
 (1,"Culture","What kind of cat is considered bad luck?","30","Black cats","White cats","All cats","Ginger cats",true),
 (1,"Biology","Which is the fastest land animal?","30","Ceetah","Lion","Giraffe","Puma",true);
 insert into Users(username,pass,nume,prenume,eMail,rol) values('profesor','profesor','domnul','profesor','prof@gmail.com','PROFESOR');
+insert into savedQuiz(authorID,title) values(12, "Test de test"),(12, "Alt test");
+insert into quizQuestions(quizID,questionID) values(2,2),(2,4);

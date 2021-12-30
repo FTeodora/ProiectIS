@@ -1,0 +1,40 @@
+﻿@{
+    ViewData["Title"] = "MyQuizes";
+}
+<h1>Quizzes created by me</h1>
+<body onload="initialize()"><div id="quizes" ></div></body>
+<script>
+
+    const listElement=document.getElementById("quizes");
+     var myVar = '@ViewData["json"]';
+      var quizzesList;
+    myVar = myVar.replace(/&quot;/g, '"');
+        
+    
+    function initialize(){
+       
+        quizzesList = JSON.parse(myVar.toString());
+        if(quizzesList.length>0)
+            quizzesList.forEach((i)=>createBox(i));
+        else
+            listElement.innerText="You haven't created any quizzes yet";
+    }
+    function createBox(quiz){
+
+        const newDiv=document.createElement('div');
+        newDiv.classList.add('a-box');
+        newDiv.innerText=quiz.title;
+        const btn=document.createElement('btn');
+        btn.classList.add('btn-box');
+        btn.innerText="Questions";
+        btn.id=quiz.id.toString();
+        btn.addEventListener('click',seeQuestions);
+        newDiv.appendChild(btn);
+        listElement.appendChild(newDiv);
+        listElement.appendChild(document.createElement('br'));
+    }
+    function seeQuestions(e){
+       var selectedID=parseInt(e.target.id);
+       window.location.href = `/Quiz/MyQuizQuestions?quizID=${selectedID}`;
+    }
+</script>

@@ -11,14 +11,22 @@ a.navbar-brand {
 :root {
     --btn: rgb(0, 153, 255);
     --btn-disabled: rgb(122, 202, 255);
+    --column-bg:rgb(161,219,227);
     --wrong: red;
     --correct: green;
+    --box-bg: rgb(0, 191, 178);
+    --box-btn:rgb(11,57,84);
 }
 
 a {
     color: #0366d6;
 }
-
+.btn-box {
+    color: #fff;
+    background-color: var(--box-btn);
+    outline: none;
+    border-radius: 5px;
+}
 .btn-grid {
     display: grid;
     grid-template-columns: repeat(2, auto);
@@ -114,4 +122,36 @@ body {
 
 .hide {
     display: none;
+}
+.col {
+    border-radius: 15px;
+    margin: 5px;
+    width: 300px;
+    height: 500px;
+    float: left;
+    background: var(--column-bg);
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+.question-box {
+    border-radius: 10px;
+    color: white;
+    width: 255px;
+    background: var(--box-bg);
+    overflow-wrap: break-word;
+    outline: none;
+    margin: 7px;
+    padding: 4px;
+}
+.a-box {
+    border-radius: 10px;
+    font-size:20px;
+    color: white;
+    min-width: 500px;
+    min-height:150px;
+    background: var(--box-bg);
+    overflow-wrap: break-word;
+    outline: none;
+    margin: 7px;
+    padding: 10px;
 }

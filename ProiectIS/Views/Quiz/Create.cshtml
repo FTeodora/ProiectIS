@@ -1,0 +1,95 @@
+﻿
+@{
+    ViewData["Title"] = "View";
+}
+
+<div><h1>Create a quiz</h1>
+    <br />
+    Give a title to your quiz:<input id="title"/>
+    <button class="btn" id="submitQuiz"> submit</button>
+    </div>
+
+<body>
+
+    <div>
+
+  <div class="col" id="current">
+    <h2>Current Questions</h2>
+  </div>
+  
+  <div class="col" id="search">
+    <h2>Search a question</h2>
+    <br />
+    <form id="search">
+        Materie:<input id="materie"/>
+        <br />
+       
+    </form>
+    Enunt:
+    <br />
+    <textarea id="enunt" form="search" rows="5" cols="34"></textarea>
+    <button class="btn" id="submitSearch"> search</button>
+  </div>
+   <div class="col" id="results">
+    <h2>Question results</h2>
+    <div id="foundArea"></div>
+  </div>
+</div>
+</body>
+<script>
+    const searchBtnElement=document.getElementById("submitSearch");
+    const searchedQuestionsElement=document.getElementById("foundArea");
+    const enuntInput=document.querySelector("#enunt");
+    const materieInput=document.querySelector("#materie");
+    var addedQuestions=new Array();
+    function addToList(e){
+
+    }
+    function getResults(e){
+        
+         
+         resetSearched();
+         $.ajax({
+         type: "POST",
+         url: 'searchQuestion',
+         data: JSON.stringify({enunt : enuntInput.value, questionSubject:materieInput.value}),
+         contentType: "application/json; ",
+         dataType: "json", 
+    success: function(list) {
+        if(list.length>0)
+        list.forEach((i)=>createBox(i,false));
+        else
+        searchedQuestionsElement.innerText="Couldn't find any results for your search";
+        },
+         error: function (e) {
+             console.log(e);
+         }
+     });
+
+    }
+    searchBtnElement.addEventListener("click", getResults);
+       
+    function createBox(question,added){
+        const newDiv=document.createElement('div');
+        newDiv.classList.add('question-box');
+        var options="\nOptions:\n";
+        for(var i=0;i<4;i++)
+            if(i!=question.correctAnsw)
+            options+=question.options[i]+"\n";
+        var correct="\nCorrect: "+question.options[question.correctAnsw];
+        newDiv.innerText=question.enunt+options+correct;
+        var addBtn=document.createElement('button');
+        addBtn.innerText="add";
+        addBtn.classList.add("btn-box");
+        addBtn.id=(question.id);
+        newDiv.appendChild(document.createElement('br'));
+        newDiv.appendChild(addBtn);
+        searchedQuestionsElement.appendChild(newDiv);
+
+    }
+    function resetSearched(){
+        while (searchedQuestionsElement.firstChild) {
+    searchedQuestionsElement.removeChild(searchedQuestionsElement.firstChild)
+  }
+    }
+</script>
