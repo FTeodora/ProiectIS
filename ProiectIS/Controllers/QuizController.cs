@@ -29,7 +29,7 @@ namespace ProiectIS.Controllers
 
         public IActionResult MyQuizes()
         {
-            Database db = new Database();
+            Database db = Database.Instance;
             if (HttpContext.Session.GetString("id") == null)
                 return Redirect("Home/Login");
             List<List<Object>> res = db.genericSelect("savedQuiz", "*", "authorID=" + HttpContext.Session.GetString("id"));
@@ -44,7 +44,7 @@ namespace ProiectIS.Controllers
         }
         public IActionResult MyQuizQuestions(int quizID)
         {
-            Database db = new Database();
+            Database db = Database.Instance;
             if (HttpContext.Session.GetString("id") == null)
                 return Redirect("Home/Login");
             List<List<Object>> res = db.genericSelect("question INNER JOIN quizQuestions ON question.id=quizQuestions.questionID INNER JOIN savedQuiz ON savedQuiz.id=quizQuestions.quizID AND savedQuiz.ID=" + quizID, "*", null);
@@ -104,7 +104,7 @@ namespace ProiectIS.Controllers
         public List<Question> searchQuestion([FromBody] Question q)
         {
             string condition ="questionSubject LIKE '%"+q.questionSubject+"%' AND enunt LIKE '%"+q.enunt+"%'";
-            Database db = new Database();
+            Database db = Database.Instance;
             List<List<Object>> res=db.genericSelect("Question","*",condition);
             db.closeConnection();
             List<Question> questions=new List<Question>();
@@ -118,7 +118,7 @@ namespace ProiectIS.Controllers
         [HttpPost]
         public async Task<IActionResult> insertQuiz([FromBody] SavedQuiz q)
         {
-            Database db = new Database();
+            Database db = Database.Instance;
             List<String> fields = new List<String>();
             fields.Add("authorID");
             fields.Add( "title");
@@ -224,7 +224,7 @@ namespace ProiectIS.Controllers
             questions= new List<Question>();
             string conditionString="(";
            
-            Database db = new Database();
+            Database db = Database.Instance;
             foreach(var i in questionsId)
             {
                 conditionString += questionsId.ToString() + ",";

@@ -86,8 +86,6 @@ namespace ProiectIS.Models
             return res;
         }
 
-        public List<List<Object>> genericSelect(string tableName, string fields, String condition
-
         public List<List<Object>> genericSelect(string tableName, string fields, String condition)
         {
             MySqlCommand cmd;
