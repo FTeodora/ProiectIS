@@ -11,7 +11,7 @@ using System.Text.Json.Serialization;
 
 namespace ProiectIS.Controllers
 {
-   
+    
     public class QuizController : Controller
     {
         string jsonString;
@@ -22,15 +22,8 @@ namespace ProiectIS.Controllers
             _logger = logger;
         }
 
-        [HttpGet]
-        public IActionResult Login()
-        {
-            return View();
-        }
-        public IActionResult Finished()
-        {
-            return View();
-        }
+        
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
@@ -58,18 +51,14 @@ namespace ProiectIS.Controllers
             }
             ViewData["questions"] = questions;
             ViewData["scor"] = 0;
-           // jsonString = JsonSerializer.Serialize(questions);
-            jsonString = JsonSerializer.Serialize(questions);
-            ViewData["json"] = jsonString;
-            // if (HttpContext.Session.GetString("id") == null)
-            //{
-            //   return Redirect("/Quiz");
-            //}
+            if (HttpContext.Session.GetString("id") == null)
+            {
+                return Redirect("/Quiz");
+            }
 
             return View();
         }
-
-        [HttpPost]
+                [HttpPost]
         public async void UpdateScore([FromBody] Score s)
         {
            
@@ -82,6 +71,24 @@ namespace ProiectIS.Controllers
     public class Score
     {
         public int score { get; set; }
+
+    }
+    [HttpPost]
+    public async void UpdateScore([FromBody] Score s)
+    {
+
+        ViewData["scor"] = s.score;
+        Finished();
+    }
+
+
+}
+public class Score
+{
+    public int score { get; set; }
+
+}
+       
 
     }
     [Serializable]
