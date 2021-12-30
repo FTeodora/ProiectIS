@@ -5,9 +5,9 @@
     // Layout = "~/Views/Layout.cshtml"; 
 }
  <body onload="initialize()"> 
-<p id="seconds"></p>
+<p id="seconds" style="font-size:20px"></p>
 <div class="d-grid gap-2 col-6 mx-auto" id="question-container">
-        <div id="question"></div>
+        <div id="question" style="font-size:23px"></div>
         
  <div id="answer-buttons" class="btn-grid"> 
  <button class="btn" type="button" id="1"></button>
@@ -59,7 +59,7 @@ function showQuestion(question){
 
 function selectAnswer(e){
     const selectedButton=e.target;
-    selectedAnsw=parseInt(e.target.id)
+    selectedAnsw=parseInt(e.target.id);
     if(parseInt(e.target.id)==questionList[currentQuestionIndex-1].correctAnsw){
         console.log("Correct!")
         currentScore+=Math.floor((1000*counter)/maxTime);
@@ -93,6 +93,11 @@ function advanceNext(){
                 currentQuestionIndex++;
             setNextQuestion();
      }
+     else{
+         
+     updateScore()
+     window.location.href = `/Quiz/Finished`
+     }
 }
 function refreshCounter() {
     const element = document.getElementById("seconds");
@@ -125,7 +130,7 @@ function revealCorrect(){
         currBtn++;
         })
         nextTimeoutElement.classList.remove('hide')
-        if(selectedAnsw>0)
+        if(selectedAnsw>=0)
                     {
                         yourAnswerElement.classList.remove('hide')
                         yourAnswerElement.innerText="Your answer: "+questionList[currentQuestionIndex-1].options[selectedAnsw]
@@ -137,5 +142,23 @@ function initialize(){
     setNextQuestion();
     interval=setInterval(refreshCounter, 1000);
 }
-
+function updateScore() {
+    console.log(JSON.stringify(currentScore));
+    console.log(currentScore.toString())
+         $.ajax({
+         type: "POST",
+         url: 'Quiz/UpdateScore',
+         data: JSON.stringify({score : currentScore}),
+         contentType: "application/json; ",
+         dataType: "json", 
+    success: function() {
+        
+        },
+         error: function (e) {
+             console.log(e);
+         }
+     });
+     
+     
+}
 </script>

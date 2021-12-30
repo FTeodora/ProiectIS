@@ -27,7 +27,10 @@ namespace ProiectIS.Controllers
         {
             return View();
         }
-
+        public IActionResult Finished()
+        {
+            return View();
+        }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
@@ -54,7 +57,7 @@ namespace ProiectIS.Controllers
                 questions.Add(new Question(var));
             }
             ViewData["questions"] = questions;
-            
+            ViewData["scor"] = 0;
            // jsonString = JsonSerializer.Serialize(questions);
             jsonString = JsonSerializer.Serialize(questions);
             ViewData["json"] = jsonString;
@@ -66,7 +69,19 @@ namespace ProiectIS.Controllers
             return View();
         }
 
-       
+        [HttpPost]
+        public async void UpdateScore([FromBody] Score s)
+        {
+           
+            ViewData["scor"] = s.score;
+            Finished();
+        }
+
+
+    }
+    public class Score
+    {
+        public int score { get; set; }
 
     }
     [Serializable]
