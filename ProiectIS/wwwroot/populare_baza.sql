@@ -22,3 +22,4 @@ insert into savedQuiz(authorID,title) values(3, "Test de test"),(3, "Alt test");
 insert into quizQuestions(quizID,questionID) values(2,2),(2,4);
 insert into quizQuestions(quizID,questionID) values(1,1),(1,4);
 insert into grup(nume,descriere) values('a a','a a');
+insert into notification(recipientID,senderID,message,accepted,declined) values(4, 5, "Ai fost provocat la un meci",false,false);

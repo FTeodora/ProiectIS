@@ -26,12 +26,16 @@ namespace ProiectIS.Controllers
         {
             if (HttpContext.Session.GetString("id") == null)
             {
-                return Redirect("/Home/Index");
+                return Redirect("Home/Index");
             }
 
             return View();
         }
-
+        public IActionResult Challenge()
+        {
+         
+            return View();
+        }
         public IActionResult MyQuizes()
         {
             Database db = Database.Instance;
@@ -125,11 +129,12 @@ namespace ProiectIS.Controllers
             return questions;
 
         }
+
         [HttpPost]
         public async Task<IActionResult> insertQuiz([FromBody] SavedQuiz q)
         {
             if (HttpContext.Session.GetString("id") == null)
-                return Redirect("Home/Index");
+                return Redirect("~Home/Index");
             Database db = Database.Instance;
             db.openConnection();
             List<String> fields = new List<String>();
@@ -151,7 +156,7 @@ namespace ProiectIS.Controllers
                 vals.Add(question);
                 db.genericInsert("quizQuestions", questionField,vals);
             }
-            return Redirect("/Quiz/MyQuizes");
+            return Redirect("Quiz/MyQuizes");
 
         }
         /*[HttpPost]

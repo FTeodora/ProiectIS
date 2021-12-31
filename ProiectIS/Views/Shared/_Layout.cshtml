@@ -29,7 +29,7 @@
                         </li>
                     </ul>
                 </div>
-                <div style="float: right;" id="nam"></div>
+                <button class="btn" style="float: right;" id="nam"></button>
             </div>
         </nav>
     </header>
@@ -41,6 +41,8 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+     <script src="@Url.Content("~/jquery-ui-1.13.0.custom/jquery-ui.min.js")" type="text/javascript"></script>
+  <link rel="stylesheet" href="@Url.Content("~/jquery-ui-1.13.0.custom/jquery-ui.min.css")" type="text/css">
     @RenderSection("Scripts", required: false)
 </body>
 </html>
@@ -62,6 +64,14 @@
           logoutElement.classList.remove('hide');
           usernameElement.classList.remove('hide');
           usernameElement.innerText=variable;
+          var res='@Context.Session.GetString("Rol")';
+          usernameElement.addEventListener('click', function(e){
+               if (res.localeCompare("PROFESOR") == 0)
+                location.href="/Profesor/Index";
+            else
+                location.href="/Student/Index";
+
+          })
       }
     },false)
 </script>

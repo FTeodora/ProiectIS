@@ -31,7 +31,9 @@ create table grupLeader(profesorID bigint,
 create table scheduledMatch(challengerID bigint,
 						challengedID bigint,
 						FOREIGN KEY (challengedID) REFERENCES grup(id) ON DELETE CASCADE,
-						FOREIGN KEY (challengerID) REFERENCES grup(id) ON DELETE CASCADE);
+						FOREIGN KEY (challengerID) REFERENCES grup(id) ON DELETE CASCADE,
+                        scheduledTime datetime);
+                        
 create table Question(id bigint auto_increment primary key,
 					authorID bigint,
                     questionSubject varchar(45),
@@ -53,4 +55,5 @@ FOREIGN KEY (authorID) REFERENCES profesor(id) ON DELETE CASCADE);
 create table quizQuestions(quizID bigint,questionID bigint,
 FOREIGN KEY (quizID) REFERENCES savedQuiz(id) ON DELETE CASCADE,
 FOREIGN KEY (questionID) REFERENCES question(id) ON DELETE CASCADE);
+create table notification(recipientID bigint,senderID bigint,message varchar(255),accepted bool,declined bool);
 
