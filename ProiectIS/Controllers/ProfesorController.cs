@@ -14,6 +14,17 @@ namespace ProiectIS.Controllers
 
         public IActionResult Index()
         {
+            var idUser = HttpContext.Session.GetString("id");
+            var db = Database.Instance;
+            List<List<Object>> res = db.genericSelect("grup g inner join grupleader gl on g.id=gl.grupID", "*", "gl.profesorID=" + idUser);
+            List<DateGrup> groups = new List<DateGrup>();
+            foreach (var i in res)
+            {
+                groups.Add(new DateGrup(i));
+            }
+
+            ViewData["Groups"] = groups;
+
             return View();
         }
 
@@ -29,6 +40,29 @@ namespace ProiectIS.Controllers
 
             Console.WriteLine("resID2= " + res);
             return View();
+        }
+
+        /*
+        public IActionResult GetGroups()
+        {
+
+            var idUser = HttpContext.Session.GetString("id");
+            var db = Database.Instance;
+            List<List<Object>> res = db.genericSelect("grup g inner join grupleader gl on g.id=gl.grupID", "*", "gl.profesorID=" + idUser);
+            List<DateGrup> groups = new List<DateGrup>();
+            foreach (var i in res)
+            {
+                groups.Add(new DateGrup(i));
+            }
+
+            ViewData["Groups"] = groups;
+
+            return View("Index");
+        }*/
+
+        public IActionResult ToEditGroup()
+        {
+            return View("EditGroup");
         }
 
         [HttpPost]
@@ -68,10 +102,6 @@ namespace ProiectIS.Controllers
             return RedirectToAction("Group", new { res = resID });
         }
 
-        public class DateGrup
-        {
-            public string nume { get; set; }
-            public string descriere { get; set; }
-        }
+
     }
 }

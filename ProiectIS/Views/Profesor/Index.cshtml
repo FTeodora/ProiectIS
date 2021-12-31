@@ -1,12 +1,28 @@
 ﻿@{
     ViewData["Title"] = "Homepage!";
     // Layout = "~/Views/Layout.cshtml";
+    List<DateGrup> groups = (List<DateGrup>)ViewData["Groups"];
 }
 
 <h1 class="display-4">Successfully logged in!<</h1>
 
+<div class="dropdown">
+    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-toggle="dropdown" aria-expanded="false">
+        Select Group
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+        @foreach (var i in groups)
+        {
+            <li><a class="dropdown-item" href=@("/Profesor/Group?res="+i.id)>@i.nume</a></li>
+        }
+    </ul>
+</div>
+
+<ul>
+</ul>
+
 <form>
     <a class="btn btn-primary" role="button" asp-controller="Profesor" asp-action="ToCreateGroup">Create Group</a>
-      <a class="btn btn-primary" role="button" asp-controller="Quiz" asp-action="Create">Create New Quiz</a>
-  <a class="btn btn-primary" role="button" asp-controller="Quiz" asp-action="MyQuizes">My Created Quizzes</a>
+    <a class="btn btn-primary" role="button" asp-controller="Quiz" asp-action="Create">Create New Quiz</a>
+    <a class="btn btn-primary" role="button" asp-controller="Quiz" asp-action="MyQuizes">My Created Quizzes</a>
 </form>

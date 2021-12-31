@@ -1,5 +1,6 @@
 ﻿@{
     ViewData["Title"] = "Grup!";
+
 }
 
 <div class="card" style="width: 18rem;">
@@ -10,6 +11,11 @@
 
         <h5 class="card-title">ProfesorID</h5>
         <p class="card-text">@ViewData["id"]</p>
+
+        <form>
+            <a class="btn btn-primary" role="button" asp-controller="Profesor" asp-action="ToEditGroup">Edit Group</a>
+        </form>
+
 
 
     </div>
