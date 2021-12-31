@@ -4,13 +4,13 @@
 }
 
 <h1>Questions</h1>
-<body onload="initialize()"><div id="questions"></div></body>
+<body ><div id="questions"></div></body>
 <script>
     var myVar = '@ViewData["json"]';
       var questionList;
     myVar = myVar.replace(/&quot;/g, '"');
      const listElement=document.getElementById("questions");
-     function initialize(){
+     window.onload =  function (){
          questionList = JSON.parse(myVar.toString());
    
             questionList.forEach((i)=>createBox(i));

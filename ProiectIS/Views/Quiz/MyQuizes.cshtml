@@ -2,7 +2,7 @@
     ViewData["Title"] = "MyQuizes";
 }
 <h1>Quizzes created by me</h1>
-<body onload="initialize()"><div id="quizes" ></div></body>
+<body onload="initialize();"><div id="quizes" ></div></body>
 <script>
 
     const listElement=document.getElementById("quizes");
@@ -11,8 +11,9 @@
     myVar = myVar.replace(/&quot;/g, '"');
         
     
-    function initialize(){
-       
+    window.onload = function(){
+       console.log(myVar);
+       console.log("aa");
         quizzesList = JSON.parse(myVar.toString());
         if(quizzesList.length>0)
             quizzesList.forEach((i)=>createBox(i));

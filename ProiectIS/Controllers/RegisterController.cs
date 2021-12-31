@@ -25,7 +25,9 @@ namespace ProiectIS.Controllers
         {
 
             var db = Database.Instance;
+            db.openConnection();
             var res = db.insert(user.username, user.password, user.nume, user.prenume, user.email);
+            db.closeConnection();
             return Ok(res);
         }
 

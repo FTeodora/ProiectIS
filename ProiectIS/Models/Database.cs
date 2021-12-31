@@ -1,6 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using MySql.Data.MySqlClient;
-
+using System.Data;
 namespace ProiectIS.Models
 {
     public class Database
@@ -22,7 +22,6 @@ namespace ProiectIS.Models
         private Database()
         {
             conn = new MySqlConnection("Server=127.0.0.1;Database=kohaat;Uid=root;Pwd=root;");
-            conn.Open();
         }
 
         public String test()
@@ -64,6 +63,8 @@ namespace ProiectIS.Models
                 vals += "'" + value.ToString() + "'" + ",";
             }
             vals = vals.Remove(vals.Length - 1, 1) + ")";
+            Console.WriteLine("insert into " + tableName + fields +
+                $" values" + vals);
             var cmd = new MySqlCommand($"insert into " + tableName + fields +
                 $" values" + vals, conn);
             var res = cmd.ExecuteNonQuery();
@@ -71,20 +72,10 @@ namespace ProiectIS.Models
             ret.noRows = res;
             ret.lastID = cmd.LastInsertedId;
 
-            Console.WriteLine("insert into " + tableName + fields +
-                $" values" + vals);
+            
             return ret;
         }
-        public int genericInsertReturnLast(string tableName, List<string> fieldNames, List<Object> values)
-        {
-            genericInsert(tableName, fieldNames, values);
-            var cmd2 = new MySqlCommand($"SELECT last_insert_item()", conn);
-            MySqlDataReader rdr = cmd2.ExecuteReader();
-            var res = 0;
-            while (rdr.Read())
-                res = (int)rdr[0];
-            return res;
-        }
+       
 
         public List<List<Object>> genericSelect(string tableName, string fields, String condition)
         {
@@ -125,7 +116,13 @@ namespace ProiectIS.Models
         }
         public void closeConnection()
         {
-            conn.Close();
+            if (conn.State == ConnectionState.Open)
+                conn.Close();
+        }
+        public void openConnection()
+        
+        {   if(conn.State == ConnectionState.Closed)
+            conn.Open();
         }
     }
 }

@@ -111,6 +111,7 @@ namespace ProiectIS.Controllers
         {
             Console.WriteLine("Inceput");
             var db = Database.Instance;
+            db.openConnection();
             List<List<Object>> utilizator = db.genericSelect("users", "*", " username='" + user.username + "' and pass='" + user.password + "';");
 
             Console.WriteLine("SF");
@@ -146,7 +147,7 @@ namespace ProiectIS.Controllers
 
         }
 
-        [HttpPost]
+        [HttpGet]
         public async Task<IActionResult> LogoutUser()
         {
             HttpContext.Session.Clear();

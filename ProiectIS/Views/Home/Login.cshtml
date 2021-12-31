@@ -37,10 +37,11 @@
                 password: pass
             })
         });
-
+        
       //  console.log(`${Session["Nume"]}`)
-
+      console.log(res);
         var obj = await res.json();
+        
         window.location.href = `${obj}`;
         console.log(obj);
     })

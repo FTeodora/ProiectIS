@@ -21,11 +21,15 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        <li class="nav-item">
+                        <li id="login" class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Login">Log in</a>
+                        </li>
+                        <li id="logout" class="nav-item">
+                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="LogoutUser">Log out</a>
                         </li>
                     </ul>
                 </div>
+                <div style="float: right;" id="nam"></div>
             </div>
         </nav>
     </header>
@@ -34,15 +38,30 @@
             @RenderBody()
         </main>
     </div>
-
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2021 - ProiectIS - <a asp-area="" asp-controller="Home" asp-action="Login">Log in</a>
-        </div>
-    </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>
+<script>
+    const loginElement=document.getElementById("login");
+    const logoutElement=document.getElementById("logout");
+    const usernameElement=document.getElementById("nam");
+    var variable;
+    window.addEventListener("load",function (){
+        
+      variable= '@Context.Session.GetString("Nume")';
+      console.log(variable);
+      if(variable==null||variable.length==0){
+          loginElement.classList.remove('hide');
+          logoutElement.classList.add('hide');
+          usernameElement.classList.add('hide');
+      }else{
+            loginElement.classList.add('hide');
+          logoutElement.classList.remove('hide');
+          usernameElement.classList.remove('hide');
+          usernameElement.innerText=variable;
+      }
+    },false)
+</script>

@@ -24,12 +24,18 @@ namespace ProiectIS.Controllers
         }
         public IActionResult Create()
         {
+            if (HttpContext.Session.GetString("id") == null)
+            {
+                return Redirect("/Home/Index");
+            }
+
             return View();
         }
 
         public IActionResult MyQuizes()
         {
             Database db = Database.Instance;
+            db.openConnection();
             if (HttpContext.Session.GetString("id") == null)
                 return Redirect("Home/Login");
             List<List<Object>> res = db.genericSelect("savedQuiz", "*", "authorID=" + HttpContext.Session.GetString("id"));
@@ -38,6 +44,7 @@ namespace ProiectIS.Controllers
             {
                 saved.Add(new SavedQuiz(i));
             }
+            
             jsonString = JsonSerializer.Serialize(saved);
             ViewData["json"] = jsonString;
             return View();
@@ -45,6 +52,7 @@ namespace ProiectIS.Controllers
         public IActionResult MyQuizQuestions(int quizID)
         {
             Database db = Database.Instance;
+            db.openConnection();
             if (HttpContext.Session.GetString("id") == null)
                 return Redirect("Home/Login");
             List<List<Object>> res = db.genericSelect("question INNER JOIN quizQuestions ON question.id=quizQuestions.questionID INNER JOIN savedQuiz ON savedQuiz.id=quizQuestions.quizID AND savedQuiz.ID=" + quizID, "*", null);
@@ -86,6 +94,7 @@ namespace ProiectIS.Controllers
                 return Redirect("/Quiz");
             }
             var db = Database.Instance;
+            db.openConnection();
             List<List<Object>> question = db.genericSelect("Question ORDER BY RAND() LIMIT 6", "*", null);
             List<Question> questions = new List<Question>();
             foreach (List<Object> var in question)
@@ -105,6 +114,7 @@ namespace ProiectIS.Controllers
         {
             string condition ="questionSubject LIKE '%"+q.questionSubject+"%' AND enunt LIKE '%"+q.enunt+"%'";
             Database db = Database.Instance;
+            db.openConnection();
             List<List<Object>> res=db.genericSelect("Question","*",condition);
             db.closeConnection();
             List<Question> questions=new List<Question>();
@@ -118,14 +128,19 @@ namespace ProiectIS.Controllers
         [HttpPost]
         public async Task<IActionResult> insertQuiz([FromBody] SavedQuiz q)
         {
+            if (HttpContext.Session.GetString("id") == null)
+                return Redirect("Home/Index");
             Database db = Database.Instance;
+            db.openConnection();
             List<String> fields = new List<String>();
             fields.Add("authorID");
             fields.Add( "title");
             List<Object> values=new List<Object>();
+           
             values.Add(HttpContext.Session.GetString("id"));
             values.Add(q.title);
-            q.id = db.genericInsertReturnLast("savedQuiz", fields, values);
+            db.openConnection();
+            q.id = db.genericInsert("savedQuiz", fields, values).lastID;
             List<String> questionField=new List<String>();
             questionField.Add("quizID");
             questionField.Add("questionID");
@@ -136,7 +151,7 @@ namespace ProiectIS.Controllers
                 vals.Add(question);
                 db.genericInsert("quizQuestions", questionField,vals);
             }
-            return Redirect("/Home/Homepage");
+            return Redirect("/Quiz/MyQuizes");
 
         }
         /*[HttpPost]
@@ -156,83 +171,5 @@ namespace ProiectIS.Controllers
 
     }*/
     }
-    [Serializable]
-    public class Question
-    {
-
-        public long id { get; set; }
-        public long authorID { get; set; }
-        public string questionSubject { get; set; }
-        public string enunt { get; set; }
-        public sbyte timeout { get; set; }
-
-        public List<String> options { get; set; }
-        public int correctAnsw { get; set; }
-        public bool approved { get; set; }
-        public Question()
-        {
-           
-        }
-        public Question(List<Object> source)
-        {
-
-            id = (long)source[0];
-            authorID = (long)source[1];
-            questionSubject = (string)source[2];
-            enunt = (string)source[3];
-            timeout = (sbyte)source[4];
-            correctAnsw = (new Random().Next()) % 4;
-            options = new List<string>();
-            int j = 0;
-            for (int i = 0; i < 4; i++)
-            {
-                if (i == correctAnsw)
-                {
-                    options.Add((string)source[5]);
-                }
-                else
-                {
-                    options.Add((string)source[6 + j]);
-                    j++;
-                }
-            }
-            approved = (bool)source[9];
-
-        }
-        
-
-    }
-    [Serializable]
-    public class SavedQuiz
-    {
-        public long id { get; set; }
-        public long authorID { get; set; }   
-        public string title { get; set; } 
-        public List<int> questionsId { get; set; }
-        public List<Question> questions { get; set; }
-        public SavedQuiz() { questions= new List<Question>(); }
-        public SavedQuiz(List<Object> list) { id =(long) list[0]; authorID = (long)list[1]; title = (string)list[2]; }
-        public void composeQuestionsID(List<Object> items)
-        {
-            questionsId= new List<int>();
-            foreach (var i in items)
-                questionsId.Add((int)i);
-
-        }
-        public List<Question> databaseQuestions(List<List<Object>> items)
-        {
-            questions= new List<Question>();
-            string conditionString="(";
-           
-            Database db = Database.Instance;
-            foreach(var i in questionsId)
-            {
-                conditionString += questionsId.ToString() + ",";
-            }
-            List<List<Object>> res = db.genericSelect("questions", "*", "id IN(" + conditionString + ")");
-            foreach(var i in res)
-                questions.Add(new Question(i)) ;
-            return questions;
-        }
-    }
+    
 }

@@ -3,7 +3,7 @@
     ViewData["Title"] = "Quiz Time!";
     // Layout = "~/Views/Layout.cshtml";
 }
- <body onload="initialize()"> 
+ <body > 
 <p id="seconds" style="font-size:20px"></p>
 <div class="d-grid gap-2 col-6 mx-auto" id="question-container">
         <div id="question" style="font-size:23px"></div>
@@ -136,7 +136,7 @@ function revealCorrect(){
                         yourAnswerElement.innerText="Your answer: "+questionList[currentQuestionIndex-1].options[selectedAnsw]
                     }
 }
-function initialize(){
+window.onload= function(){
     var currentQuestionIndex=0;
     currentScore=0;
     setNextQuestion();

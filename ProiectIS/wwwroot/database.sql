@@ -1,3 +1,4 @@
+
 create database kohaat;
 use kohaat;
 create table users(id bigint auto_increment primary key, 
@@ -12,25 +13,25 @@ ALTER TABLE users ADD UNIQUE (username);
 create table student(id bigint primary key,
 				score bigint,
                 wonMatches bigint,
-                FOREIGN KEY (id) REFERENCES Users(id));
+                FOREIGN KEY (id) REFERENCES Users(id) ON DELETE CASCADE);
 create table profesor(id bigint primary key,
-FOREIGN KEY (id) REFERENCES Users(id));
+FOREIGN KEY (id) REFERENCES Users(id) ON DELETE CASCADE);
 create table grup(id bigint auto_increment primary key,
 				nume varchar(45),
                 descriere varchar(255));
 create table grupMember(studentID bigint, 
 				grupID bigint,
-				FOREIGN KEY (studentID) REFERENCES student(id),
-				FOREIGN KEY (grupID) REFERENCES grup(id),
+				FOREIGN KEY (studentID) REFERENCES student(id) ON DELETE CASCADE,
+				FOREIGN KEY (grupID) REFERENCES grup(id) ON DELETE CASCADE,
 				groupScore bigint);
 create table grupLeader(profesorID bigint, 
 				grupID bigint,
-				FOREIGN KEY (profesorID) REFERENCES profesor(id),
-				FOREIGN KEY (grupID) REFERENCES grup(id));
+				FOREIGN KEY (profesorID) REFERENCES profesor(id) ON DELETE CASCADE,
+				FOREIGN KEY (grupID) REFERENCES grup(id) ON DELETE CASCADE);
 create table scheduledMatch(challengerID bigint,
 						challengedID bigint,
-						FOREIGN KEY (challengedID) REFERENCES grup(id),
-						FOREIGN KEY (challengerID) REFERENCES grup(id));
+						FOREIGN KEY (challengedID) REFERENCES grup(id) ON DELETE CASCADE,
+						FOREIGN KEY (challengerID) REFERENCES grup(id) ON DELETE CASCADE);
 create table Question(id bigint auto_increment primary key,
 					authorID bigint,
                     questionSubject varchar(45),
@@ -41,15 +42,15 @@ create table Question(id bigint auto_increment primary key,
                     wrongAnswer2 varchar(100),
                     wrongAnswer3 varchar(100),
                     approved bool, -- determina daca intrebarea a fost aprobata sau nu de un moderator(adica daca poate fi pusa in circulatie)
-                    FOREIGN KEY (authorID) REFERENCES profesor(id)
+                    FOREIGN KEY (authorID) REFERENCES profesor(id) ON DELETE CASCADE
                     
 );
 
 create table savedQuiz(id bigint auto_increment primary key,
 authorID bigint,
 title varchar(50),
-FOREIGN KEY (authorID) REFERENCES profesor(id));
+FOREIGN KEY (authorID) REFERENCES profesor(id) ON DELETE CASCADE);
 create table quizQuestions(quizID bigint,questionID bigint,
-FOREIGN KEY (quizID) REFERENCES savedQuiz(id),
-FOREIGN KEY (questionID) REFERENCES question(id));
+FOREIGN KEY (quizID) REFERENCES savedQuiz(id) ON DELETE CASCADE,
+FOREIGN KEY (questionID) REFERENCES question(id) ON DELETE CASCADE);
 
