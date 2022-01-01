@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 using ProiectIS.Models;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-
+using ProiectIS.Hubs;
 namespace ProiectIS.Controllers
 {
 
@@ -16,6 +16,7 @@ namespace ProiectIS.Controllers
     {
         string jsonString;
         int totalScore=0;
+        long lobby;
         private readonly ILogger<QuizController> _logger;
 
         public QuizController(ILogger<QuizController> logger)
@@ -28,6 +29,13 @@ namespace ProiectIS.Controllers
             {
                 return Redirect("Home/Index");
             }
+
+            return View();
+        }
+        public IActionResult Lobby(long id)
+        {
+            ViewData["lobbyID"] = id;
+            lobby = id;
 
             return View();
         }
@@ -91,24 +99,25 @@ namespace ProiectIS.Controllers
             return View();
         }
         [HttpGet]
-        public IActionResult Index()
+        public IActionResult Index(long id)
         {
             if (HttpContext.Session.GetString("id") == null)
             {
-                return Redirect("/Quiz");
+                return Redirect("Home/Index");
             }
-            var db = Database.Instance;
-            db.openConnection();
-            List<List<Object>> question = db.genericSelect("Question ORDER BY RAND() LIMIT 6", "*", null);
-            List<Question> questions = new List<Question>();
-            foreach (List<Object> var in question)
+            lobby = id;
+            List<Question> saved;
+            if (id == 0)
+                saved = generateQuestions(6);
+            else
             {
-                questions.Add(new Question(var));
+                HubManager.Instance.initializeRoom(id.ToString());
+                HubManager.Instance.makeQuestions(id);
+                saved = HubManager.Instance.getLobbyQuestions(id);
             }
-            ViewData["questions"] = questions;
             ViewData["scor"] = 0;
-
-            jsonString = JsonSerializer.Serialize(questions);
+            ViewData["lobbyID"] = id;
+            jsonString = JsonSerializer.Serialize(saved);
             ViewData["json"] = jsonString;
 
             return View();
@@ -134,7 +143,7 @@ namespace ProiectIS.Controllers
         public async Task<IActionResult> insertQuiz([FromBody] SavedQuiz q)
         {
             if (HttpContext.Session.GetString("id") == null)
-                return Redirect("~Home/Index");
+                return Redirect("Home/Index");
             Database db = Database.Instance;
             db.openConnection();
             List<String> fields = new List<String>();
@@ -159,6 +168,24 @@ namespace ProiectIS.Controllers
             return Redirect("Quiz/MyQuizes");
 
         }
+        public static List<Question> generateQuestions(int amount)
+        {
+            var db = Database.Instance;
+            db.openConnection();
+            List<List<Object>> question = db.genericSelect("Question ORDER BY RAND() LIMIT "+amount, "*", null);
+            List<Question> questions = new List<Question>();
+            foreach (List<Object> var in question)
+            {
+                questions.Add(new Question(var));
+            }
+            return questions;
+        }
+        [HttpPost]
+        public void makeQuestions()
+        {
+            HubManager.Instance.makeQuestions(lobby);
+        }
+
         /*[HttpPost]
         public async void UpdateScore([FromBody] Score s)
         {

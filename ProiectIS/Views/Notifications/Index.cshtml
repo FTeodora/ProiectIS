@@ -27,10 +27,21 @@
             questionList.forEach((i)=> showNotification(i));
             
      }
-     function startQuiz(e){
+    async function startQuiz(e){
+         var va=parseInt(e.target.parentElement.id);
          
-        location.href="Quiz/Index";
+        var res = await fetch('/Notifications/deleteNotification', {
+            method: "POST",
+            headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+            body: JSON.stringify({id:va,lobbyID: parseInt(e.target.id) })
+        });
         
+      console.log(res);
+        var obj = await res.json();
+        
+        window.location.href = `${obj}`;
+
+    
      }
      function sendChallenge(e){
          var va=parseInt(e.target.id);
@@ -41,8 +52,8 @@
          data: JSON.stringify({id:va }),
          contentType: "application/json; ",
          dataType: "json", 
-    success: function() {
-       
+    success: function(redirect) {
+       location.href="Quiz/Lobby?id="+redirect;
         },
          error: function (e) {
              console.log(e);
@@ -54,10 +65,11 @@
         const newDiv=document.createElement('div');
         newDiv.classList.add('question-box');
         newDiv.innerText=question.message;
-
+        newDiv.id=question.id;
         const btn=document.createElement('button');
         btn.classList.add('btn');
         btn.innerText="accept";
+        btn.id=question.lobbyID;
         btn.addEventListener('click', startQuiz);
         newDiv.appendChild(btn);
         listElement.appendChild(newDiv);

@@ -38,7 +38,15 @@ namespace ProiectIS.Controllers
 
         }
         [HttpPost]
-        public void challengeUser([FromBody]User u)
+        public async Task<IActionResult> deleteNotification([FromBody]Notification n)
+        {
+           Database db=Database.Instance;
+            db.openConnection();
+            db.genericDelete("notification", "id=" + n.id);
+            return Ok("Quiz/Lobby?id = " + n.lobbyID);
+        }
+        [HttpPost]
+        public long challengeUser([FromBody]User u)
         {
             
             List<String> fieldNames=new List<String>();
@@ -47,6 +55,7 @@ namespace ProiectIS.Controllers
             fieldNames.Add("message");
             fieldNames.Add("accepted");
             fieldNames.Add("declined");
+            fieldNames.Add("lobbyID");
             List<Object> fieldValues=new List<Object>();
             
             fieldValues.Add(u.id);
@@ -55,6 +64,8 @@ namespace ProiectIS.Controllers
             fieldValues.Add("Ai fost provocat la un meci de catre " + HttpContext.Session.GetString("Nume"));
             fieldValues.Add(0);
             fieldValues.Add(0);
+            long generatedLobby = new Random().NextInt64();
+            fieldValues.Add(generatedLobby);
            
             Database db = Database.Instance;
             
@@ -62,6 +73,7 @@ namespace ProiectIS.Controllers
             
             db.genericInsert("notification",fieldNames,fieldValues);
             db.closeConnection();
+            return generatedLobby;
         }
        
     }

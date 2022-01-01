@@ -55,5 +55,5 @@ FOREIGN KEY (authorID) REFERENCES profesor(id) ON DELETE CASCADE);
 create table quizQuestions(quizID bigint,questionID bigint,
 FOREIGN KEY (quizID) REFERENCES savedQuiz(id) ON DELETE CASCADE,
 FOREIGN KEY (questionID) REFERENCES question(id) ON DELETE CASCADE);
-create table notification(recipientID bigint,senderID bigint,message varchar(255),accepted bool,declined bool);
+create table notification(id bigint auto_increment primary key,recipientID bigint,senderID bigint,message varchar(255),accepted bool,declined bool,lobbyID bigint);
 

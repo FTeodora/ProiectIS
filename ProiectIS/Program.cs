@@ -21,6 +21,7 @@ namespace ProiectIS
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
+                    //webBuilder.AddSignalR();
                 });
     }
 }
