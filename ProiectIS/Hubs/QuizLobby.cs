@@ -25,6 +25,11 @@ namespace ProiectIS.Hubs
             HubManager.Instance.removeMember(groupName);
             await Clients.Group(groupName).SendAsync("Send", $"{Context.ConnectionId} has left the group {groupName}.");
         }
+        public async Task SendScore(string lobby,long score)
+        {
+            Console.WriteLine(score);
+            await Clients.OthersInGroup(lobby).SendAsync("ReceiveScore", $"{Context.GetHttpContext().Session.GetString("Nume")} ", score);
+        }
         public async Task SendMessage(string user)
         {
             await Clients.All.SendAsync("ReceiveMessage");

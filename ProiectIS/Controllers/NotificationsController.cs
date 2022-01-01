@@ -43,7 +43,7 @@ namespace ProiectIS.Controllers
            Database db=Database.Instance;
             db.openConnection();
             db.genericDelete("notification", "id=" + n.id);
-            return Ok("Quiz/Lobby?id = " + n.lobbyID);
+            return Ok("Quiz/Lobby?id=" + n.lobbyID);
         }
         [HttpPost]
         public long challengeUser([FromBody]User u)

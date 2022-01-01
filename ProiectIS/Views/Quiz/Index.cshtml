@@ -3,6 +3,8 @@
     ViewData["Title"] = "Quiz Time!";
     // Layout = "~/Views/Layout.cshtml";
 }
+<script src="~/js/signalr/dist/browser/signalr.js"></script>
+    <script src="~/js/signalr/dist/browser/signalr.min.js"></script>
  <body > 
 <p id="seconds" style="font-size:20px"></p>
 <div class="d-grid gap-2 col-6 mx-auto" id="question-container">
@@ -14,15 +16,21 @@
    <button class="btn" type="button" id="3"></button>
   <button class="btn" type="button" id="4"></button></div>
   <div id="score"></div>
-   <div id="yourAnswer"></div>
-  <div id="untilNext"></div>
  
+   <div id="yourAnswer"></div>
+   
+  <div id="untilNext"></div>
+  <div id="opponentsScore"></div>
     </div>
 </body>
 
 <script>
+        "use strict";
+
+var connection=connection = new signalR.HubConnectionBuilder().withUrl("/quizLobby").build();
+
+    
     var myVar = '@ViewData["json"]';
-    console.log(myVar);
     myVar = myVar.replace(/&quot;/g, '"');
     var questionList = JSON.parse(myVar.toString());
     var questions;
@@ -39,7 +47,7 @@
     var currentScore=0;
     var selectedAnsw;
     var nextTimeout=10;
-
+    var interval;
     function showQuestion(question){
         scoreElement.innerText="Score: "+currentScore;
         questionElement.innerText=currentQuestionIndex+". "+question.enunt;
@@ -129,18 +137,33 @@ function revealCorrect(){
             button.classList.add('wrong')
         currBtn++;
         })
-        nextTimeoutElement.classList.remove('hide')
+        nextTimeoutElement.classList.remove('hide');
+        connection.invoke("SendScore",'@ViewData["lobbyID"]'.toString(),currentScore).catch(function (err) {
+        return console.error(err.toString());
+    });
+    
         if(selectedAnsw>=0)
                     {
                         yourAnswerElement.classList.remove('hide')
                         yourAnswerElement.innerText="Your answer: "+questionList[currentQuestionIndex-1].options[selectedAnsw]
                     }
 }
+connection.start().catch(function (err) {
+    return console.then(() => {
+    connection.invoke("JoinRoom",'@ViewData["lobbyID"]'.toString()).catch(function (err) {
+        return console.error(err.toString());
+    }); 
+}).error(err.toString());
+});
 window.onload= function(){
+    
+   
+   
     var currentQuestionIndex=0;
     currentScore=0;
     setNextQuestion();
     interval=setInterval(refreshCounter, 1000);
+    
 }
 function updateScore() {
    
@@ -157,7 +180,13 @@ function updateScore() {
              console.log(e);
          }
      });
-     
+function opponentScore(user,score){
+    var r=document.createElement("div");
+    r.classList.add("btn");
+     document.getElementById("opponentsScore").appendChild(r);
+   
+connection.on("ReceiveScore", opponentScore);
+  
      
 }
 </script>

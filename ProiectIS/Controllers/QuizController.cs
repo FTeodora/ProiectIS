@@ -27,7 +27,7 @@ namespace ProiectIS.Controllers
         {
             if (HttpContext.Session.GetString("id") == null)
             {
-                return Redirect("Home/Index");
+                return Redirect("/Home/Index");
             }
 
             return View();
@@ -49,7 +49,7 @@ namespace ProiectIS.Controllers
             Database db = Database.Instance;
             db.openConnection();
             if (HttpContext.Session.GetString("id") == null)
-                return Redirect("Home/Login");
+                return Redirect("/Home/Login");
             List<List<Object>> res = db.genericSelect("savedQuiz", "*", "authorID=" + HttpContext.Session.GetString("id"));
             List<SavedQuiz> saved = new List<SavedQuiz>();
             foreach (var i in res)
@@ -66,7 +66,7 @@ namespace ProiectIS.Controllers
             Database db = Database.Instance;
             db.openConnection();
             if (HttpContext.Session.GetString("id") == null)
-                return Redirect("Home/Login");
+                return Redirect("/Home/Login");
             List<List<Object>> res = db.genericSelect("question INNER JOIN quizQuestions ON question.id=quizQuestions.questionID INNER JOIN savedQuiz ON savedQuiz.id=quizQuestions.quizID AND savedQuiz.ID=" + quizID, "*", null);
             List<Question> saved = new List<Question>();
             foreach (var i in res)
@@ -103,7 +103,7 @@ namespace ProiectIS.Controllers
         {
             if (HttpContext.Session.GetString("id") == null)
             {
-                return Redirect("Home/Index");
+                return Redirect("/Home/Index");
             }
             lobby = id;
             List<Question> saved;
@@ -111,9 +111,7 @@ namespace ProiectIS.Controllers
                 saved = generateQuestions(6);
             else
             {
-                HubManager.Instance.initializeRoom(id.ToString());
-                HubManager.Instance.makeQuestions(id);
-                saved = HubManager.Instance.getLobbyQuestions(id);
+                saved = generateQuestions(6);
             }
             ViewData["scor"] = 0;
             ViewData["lobbyID"] = id;
@@ -143,7 +141,7 @@ namespace ProiectIS.Controllers
         public async Task<IActionResult> insertQuiz([FromBody] SavedQuiz q)
         {
             if (HttpContext.Session.GetString("id") == null)
-                return Redirect("Home/Index");
+                return Redirect("/Home/Index");
             Database db = Database.Instance;
             db.openConnection();
             List<String> fields = new List<String>();
@@ -165,7 +163,7 @@ namespace ProiectIS.Controllers
                 vals.Add(question);
                 db.genericInsert("quizQuestions", questionField,vals);
             }
-            return Redirect("Quiz/MyQuizes");
+            return Redirect("/Quiz/MyQuizes");
 
         }
         public static List<Question> generateQuestions(int amount)
@@ -178,6 +176,7 @@ namespace ProiectIS.Controllers
             {
                 questions.Add(new Question(var));
             }
+            db.closeConnection();
             return questions;
         }
         [HttpPost]

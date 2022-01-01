@@ -17,7 +17,7 @@
     "use strict";
 
 var connection = new signalR.HubConnectionBuilder().withUrl("/quizLobby").build();
-var readyPlayers=0;
+
 var countdown=10;
 //Disable the send button until connection is established.
 //document.getElementById("sendButton").disabled = true;
@@ -64,7 +64,7 @@ connection.start().then(function () {
         document.getElementById("joinbtn").disabled = true;
     var user = '@Context.Session.GetString("Nume")';
 
-    connection.invoke("JoinRoom", "69").catch(function (err) {
+    connection.invoke("JoinRoom",'@ViewData["lobbyID"]').catch(function (err) {
         return console.error(err.toString());
     });
     

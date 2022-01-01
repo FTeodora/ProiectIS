@@ -1,6 +1,7 @@
 
 create database kohaat;
 use kohaat;
+SET SQL_SAFE_UPDATES = 0;
 create table users(id bigint auto_increment primary key, 
 					username varchar(31) unique, 
                     pass varchar(31),
