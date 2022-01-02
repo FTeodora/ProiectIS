@@ -25,6 +25,8 @@ namespace ProiectIS.Controllers
 
             ViewData["Groups"] = groups;
 
+            // Console.WriteLine("nr de grupuri " + groups.Count);
+
             return View();
         }
 
@@ -38,30 +40,48 @@ namespace ProiectIS.Controllers
             ViewData["GroupID"] = res;
             ViewData["id"] = HttpContext.Session.GetString("id");
 
+            HttpContext.Session.SetString("GroupID", res.ToString());
+
             Console.WriteLine("resID2= " + res);
             return View();
         }
 
-        /*
-        public IActionResult GetGroups()
-        {
-
-            var idUser = HttpContext.Session.GetString("id");
-            var db = Database.Instance;
-            List<List<Object>> res = db.genericSelect("grup g inner join grupleader gl on g.id=gl.grupID", "*", "gl.profesorID=" + idUser);
-            List<DateGrup> groups = new List<DateGrup>();
-            foreach (var i in res)
-            {
-                groups.Add(new DateGrup(i));
-            }
-
-            ViewData["Groups"] = groups;
-
-            return View("Index");
-        }*/
-
         public IActionResult ToEditGroup()
         {
+            //Console.WriteLine("ID GRUP: " + idGrup);
+            return View("EditGroup");
+        }
+
+        [HttpPost]
+        public IActionResult AddMember([FromForm] string email)
+        {
+            //select din tabela student dupa email a id ului lui
+            //insert inrupmember
+
+
+            var db = Database.Instance;
+
+            List<List<Object>> res = db.genericSelect("users", "*", "eMail='" + email + "'");
+            List<User> studentData = new List<User>();
+            foreach (var i in res)
+            {
+                studentData.Add(new User(i));
+            }
+
+            //Console.WriteLine(studentData[0].id);
+
+            List<string> fields = new List<string>();
+            fields.Add("studentID");
+            fields.Add("grupID");
+
+            List<Object> values = new List<object>();
+            values.Add(studentData[0].id);
+            values.Add(HttpContext.Session.GetString("GroupID"));
+
+            DateReturn resInsert = db.genericInsert("grupmember", fields, values);
+
+            Console.WriteLine("ID-ul grupului: " + HttpContext.Session.GetString("GroupID"));
+
             return View("EditGroup");
         }
 

@@ -41,11 +41,7 @@ namespace ProiectIS.Models
 
             return res;
         }
-        public class DateReturn
-        {
-            public int noRows { get; set; }
-            public long lastID { get; set; }
-        }
+
 
         public DateReturn genericInsert(string tableName, List<string> fieldNames, List<Object> values)
         {
@@ -72,10 +68,10 @@ namespace ProiectIS.Models
             ret.noRows = res;
             ret.lastID = cmd.LastInsertedId;
 
-            
+
             return ret;
         }
-       
+
 
         public List<List<Object>> genericSelect(string tableName, string fields, String condition)
         {
@@ -120,9 +116,10 @@ namespace ProiectIS.Models
                 conn.Close();
         }
         public void openConnection()
-        
-        {   if(conn.State == ConnectionState.Closed)
-            conn.Open();
+
+        {
+            if (conn.State == ConnectionState.Closed)
+                conn.Open();
         }
     }
 }

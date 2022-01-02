@@ -11,6 +11,7 @@ namespace ProiectIS.Controllers
             return View();
         }
 
+        /*
         public class User
         {
             public string username { get; set; }
@@ -18,7 +19,7 @@ namespace ProiectIS.Controllers
             public string nume { get; set; }
             public string prenume { get; set; }
             public string email { get; set; }
-        }
+        }*/
 
         [HttpPost]
         public async Task<IActionResult> RegisterUser([FromBody] User user)
