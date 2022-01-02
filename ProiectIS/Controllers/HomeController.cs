@@ -68,6 +68,13 @@ namespace ProiectIS.Controllers
             return View();
         }
 
+        public class UserLoginClass
+        {
+            public string username { get; set; }
+            public string password { get; set; }
+        }
+
+
         [HttpPost]
         public async Task<IActionResult> LoginUser([FromBody] UserLoginClass user)
         {

@@ -1,6 +1,7 @@
 
 create database kohaat;
 use kohaat;
+SET SQL_SAFE_UPDATES = 0;
 create table users(id bigint auto_increment primary key, 
 					username varchar(31) unique, 
                     pass varchar(31),
@@ -31,7 +32,9 @@ create table grupLeader(profesorID bigint,
 create table scheduledMatch(challengerID bigint,
 						challengedID bigint,
 						FOREIGN KEY (challengedID) REFERENCES grup(id) ON DELETE CASCADE,
-						FOREIGN KEY (challengerID) REFERENCES grup(id) ON DELETE CASCADE);
+						FOREIGN KEY (challengerID) REFERENCES grup(id) ON DELETE CASCADE,
+                        scheduledTime datetime);
+                        
 create table Question(id bigint auto_increment primary key,
 					authorID bigint,
                     questionSubject varchar(45),
@@ -53,4 +56,5 @@ FOREIGN KEY (authorID) REFERENCES profesor(id) ON DELETE CASCADE);
 create table quizQuestions(quizID bigint,questionID bigint,
 FOREIGN KEY (quizID) REFERENCES savedQuiz(id) ON DELETE CASCADE,
 FOREIGN KEY (questionID) REFERENCES question(id) ON DELETE CASCADE);
+create table notification(id bigint auto_increment primary key,recipientID bigint,senderID bigint,message varchar(255),accepted bool,declined bool,lobbyID bigint);
 

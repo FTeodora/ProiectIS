@@ -1,5 +1,7 @@
 ﻿namespace ProiectIS.Models
+
 {
+    [Serializable]
     public class User
     {
 
@@ -14,7 +16,11 @@
         public string email { get; set; } = null;
 
         public string rol { get; set; } = null;
+        public User()
+        {
 
+        }
+       
         public User(List<Object> source)
         {
 
@@ -28,5 +34,6 @@
 
         }
 
+        
     }
 }

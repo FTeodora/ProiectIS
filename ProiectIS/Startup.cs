@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using ProiectIS.Hubs;
 
 namespace ProiectIS
 {
@@ -38,6 +39,7 @@ namespace ProiectIS
             {
                 options.AllowSynchronousIO = true;
             });
+            services.AddSignalR();
 
         }
 
@@ -68,7 +70,9 @@ namespace ProiectIS
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapHub<QuizLobby>("/quizLobby");
             });
+
         }
     }
 }

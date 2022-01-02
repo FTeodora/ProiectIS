@@ -1,0 +1,75 @@
+﻿
+@{
+    ViewData["Title"] = "Lobby";
+}
+<script src="~/js/signalr/dist/browser/signalr.js"></script>
+    <script src="~/js/signalr/dist/browser/signalr.min.js"></script>
+<h1>Current users waiting for the quiz to start:</h1>
+<div id="waitingUsers"></div>
+<button id="joinbtn" class="btn">I'm ready for the match!</button>
+<div>Waiting people:
+    <p id="waitingCount"></p>
+</div>
+<div class="hide" id="startingMatch">Both players ready. Starting match in: 
+    <div class="hide" id="matchCountdown"></div>
+</div>
+<script>
+    "use strict";
+
+var connection = new signalR.HubConnectionBuilder().withUrl("/quizLobby").build();
+
+var countdown=10;
+//Disable the send button until connection is established.
+//document.getElementById("sendButton").disabled = true;
+function refreshCounter() {
+    const element = document.getElementById("matchCountdown");
+    element.innerHTML =countdown;
+  
+    if(countdown>0)
+        countdown--;
+         else
+        {
+            location.href="/Quiz/Index?id="+'@ViewData["lobbyID"]';
+             
+        }
+   
+}
+function announceCountdown(){
+    document.getElementById("startingMatch").classList.remove("hide");
+    document.getElementById("matchCountdown").classList.remove("hide");
+    interval=setInterval(refreshCounter, 1000);
+}
+function updateView(user,members){
+     document.getElementById("waitingCount").innerHTML=`${members}`;
+    
+    var div = document.createElement("div");
+    div.innerText = `${user} is ready for the match`;
+    if(members==2)
+            announceCountdown();
+    document.getElementById("waitingUsers").appendChild(div);
+    document.getElementById("waitingUsers").appendChild(document.createElement("<br>"));
+    
+}
+connection.on("ReceiveMessage", updateView);
+
+connection.start().then(function () {
+    document.getElementById("joinbtn").disabled = false;
+
+   
+}).catch(function (err) {
+    return console.error(err.toString());
+});
+
+    document.getElementById("joinbtn").addEventListener('click',function (event){
+        document.getElementById("joinbtn").disabled = true;
+    var user = '@Context.Session.GetString("Nume")';
+
+    connection.invoke("JoinRoom",'@ViewData["lobbyID"]').catch(function (err) {
+        return console.error(err.toString());
+    });
+    
+    event.preventDefault();
+   
+    },false)
+</script>
+   

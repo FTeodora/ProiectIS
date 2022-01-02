@@ -102,6 +102,14 @@ namespace ProiectIS.Models
             rdr.Close();
             return values;
         }
+        public int genericDelete(string tableName,string criteria)
+        {
+            MySqlCommand cmd;
+            Console.WriteLine("DELETE FROM " + tableName + " WHERE " + criteria);
+            cmd = new MySqlCommand("DELETE FROM " + tableName + " WHERE " + criteria, conn);
+            int i=cmd.ExecuteNonQuery();
+            return i;
+        }
         public String checkUser(string uname, string pass)
         {
             var cmd = new MySqlCommand($"select * from users where username='{uname}' and pass='{pass}'", conn);

@@ -1,0 +1,33 @@
+﻿
+@{
+    ViewData["Title"] = "Challenge";
+}
+<head>
+      
+ 
+  <script>
+       var hour;
+       var mins;
+       var btn;
+      function getDate(e){
+       var date = $("#datepicker").datepicker("getDate");
+    console.log($.datepicker.formatDate("yy-mm-dd", date)+" "+hour.value+":"+mins.value);
+  }
+    window.addEventListener("load",function() {
+        $( "#datepicker" ).datepicker();
+      btn=document.getElementById("challenge");
+      mins=document.getElementById("mm");
+      hour=document.getElementById("hh");
+       btn.addEventListener('click',getDate);
+        
+  })
+  
+  </script>
+</head>
+<body>
+ 
+<p>Date: <input type="text" id="datepicker"></p>
+ <div><input type="number" id="hh"  min="0" max="23" value="12">:
+     <input type="number" id="mm"  min="0" max="59" value="0"></div>
+ <button id="challenge" class="btn">challenge</button>
+</body>

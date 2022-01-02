@@ -1,0 +1,116 @@
+﻿
+@{
+    ViewData["Title"] = "Challenges";
+}
+
+<h1>Challenges</h1>
+
+<body ><div id="received"></div>
+    <div id="search">
+        Search by the username and challenge a user:
+        <input type="text" id="notifUname" />
+        <button id="searchUser" class="btn">search </button>
+    </div>
+    <div id="foundArea"></div></body>
+<script>
+    var myVar = '@ViewData["json"]';
+      var questionList;
+    myVar = myVar.replace(/&quot;/g, '"');
+     const listElement=document.getElementById("received");
+     const searchedQuestionsElement=document.getElementById("foundArea");
+     const input=document.getElementById("notifUname");
+     const searchBtn=document.getElementById("searchUser");
+            searchBtn.addEventListener('click',getResults);
+     window.onload =  function (){
+         questionList = JSON.parse(myVar.toString());
+        
+            questionList.forEach((i)=> showNotification(i));
+            
+     }
+    async function startQuiz(e){
+         var va=parseInt(e.target.parentElement.id);
+         
+        var res = await fetch('/Notifications/deleteNotification', {
+            method: "POST",
+            headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+            body: JSON.stringify({id:va,lobbyID: parseInt(e.target.id) })
+        });
+        
+      console.log(res);
+        var obj = await res.json();
+        
+        window.location.href = `${obj}`;
+
+    
+     }
+     function sendChallenge(e){
+         var va=parseInt(e.target.id);
+         
+         $.ajax({
+         type: "POST",
+         url: '@(Url.Action("challengeUser","Notifications"))',
+         data: JSON.stringify({id:va }),
+         contentType: "application/json; ",
+         dataType: "json", 
+    success: function(redirect) {
+       location.href="Quiz/Lobby?id="+redirect;
+        },
+         error: function (e) {
+             console.log(e);
+         }
+     });
+    
+     }
+    function showNotification(question){
+        const newDiv=document.createElement('div');
+        newDiv.classList.add('question-box');
+        newDiv.innerText=question.message;
+        newDiv.id=question.id;
+        const btn=document.createElement('button');
+        btn.classList.add('btn');
+        btn.innerText="accept";
+        btn.id=question.lobbyID;
+        btn.addEventListener('click', startQuiz);
+        newDiv.appendChild(btn);
+        listElement.appendChild(newDiv);
+        listElement.appendChild(document.createElement('br'));
+    }
+    function showUser(user){
+        const newDiv=document.createElement('div');
+        newDiv.classList.add('question-box');
+        newDiv.innerText=user.username+"\n"+user.nume+" "+user.prenume;
+
+        const btn=document.createElement('button');
+        btn.classList.add('btn');
+        btn.innerText="challenge";
+        btn.id=user.id;
+        btn.addEventListener('click',sendChallenge);
+        newDiv.appendChild(btn);
+        searchedQuestionsElement.appendChild(newDiv);
+        searchedQuestionsElement.appendChild(document.createElement('br'));
+    }
+      function getResults(e){
+         resetSearched();
+         $.ajax({
+         type: "POST",
+         url: '@(Url.Action("searchUsersFromNotifs","Notifications"))',
+         data: JSON.stringify({username : input.value.toString()}),
+         contentType: "application/json; ",
+         dataType: "json", 
+    success: function(list) {
+        if(list.length>0)
+        list.forEach((i)=>showUser(i));
+        else
+        searchedQuestionsElement.innerText="Couldn't find any results for your search";
+        },
+         error: function (e) {
+             console.log(e);
+         }
+     });
+     }
+     function resetSearched(){
+          while (searchedQuestionsElement.firstChild) {
+    searchedQuestionsElement.removeChild(searchedQuestionsElement.firstChild)
+  }
+  }
+</script>
