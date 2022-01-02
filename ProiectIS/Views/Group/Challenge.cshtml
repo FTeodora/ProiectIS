@@ -9,15 +9,19 @@
        var hour;
        var mins;
        var btn;
+       var selectedGroup;
+       var searchedGroups;
       function getDate(e){
        var date = $("#datepicker").datepicker("getDate");
     console.log($.datepicker.formatDate("yy-mm-dd", date)+" "+hour.value+":"+mins.value);
   }
+
     window.addEventListener("load",function() {
         $( "#datepicker" ).datepicker();
       btn=document.getElementById("challenge");
       mins=document.getElementById("mm");
       hour=document.getElementById("hh");
+      selectedGroup=document.getElementById("challengedGroup");
        btn.addEventListener('click',getDate);
         
   })
@@ -29,5 +33,12 @@
 <p>Date: <input type="text" id="datepicker"></p>
  <div><input type="number" id="hh"  min="0" max="23" value="12">:
      <input type="number" id="mm"  min="0" max="59" value="0"></div>
+     <br />
+     <div id="challengedGroup"></div>
+     <br />
+
+ <input type="text" id="groupName" />
+<button id="searchGroupBtn" class="btn">search</button><br />
+<div id="foundGroups"></div> <br />
  <button id="challenge" class="btn">challenge</button>
 </body>

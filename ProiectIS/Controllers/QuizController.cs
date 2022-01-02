@@ -40,11 +40,7 @@ namespace ProiectIS.Controllers
 
             return View();
         }
-        public IActionResult Challenge()
-        {
-         
-            return View();
-        }
+        
         public IActionResult MyQuizes()
         {
             Database db = Database.Instance;

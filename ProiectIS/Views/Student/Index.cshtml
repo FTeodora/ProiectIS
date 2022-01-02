@@ -1,13 +1,14 @@
 ﻿@using ProiectIS.Controllers
 @{
     ViewData["Title"] = "Quiz Time!";
+    ViewData["aaa"] = 0;
 }
 
 <div class="options-grid">
 
     <form class="options-grid">
         <a class="btn btn-primary" role="button" asp-controller="Student" asp-action="ViewPersonalData">View Personal Data</a>
-         <a class="btn btn-primary" role="button" asp-controller="Quiz" asp-action="Index">Training</a>
+         <a class="btn btn-primary" role="button" asp-controller="Quiz" asp-action="Index" asp-route-id="@ViewData["aaa"]">Training</a>
          <a class="btn btn-primary" role="button" asp-controller="Notifications" asp-action="Index">Challenge Student!</a>
     </form>
 
