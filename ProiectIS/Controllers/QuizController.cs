@@ -9,6 +9,7 @@ using ProiectIS.Models;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using ProiectIS.Hubs;
+using System.Threading;
 namespace ProiectIS.Controllers
 {
 
@@ -166,24 +167,24 @@ namespace ProiectIS.Controllers
             return Redirect("/Quiz/MyQuizes");
 
         }
-        public static List<Question> generateQuestions(int amount)
+        public  List<Question> generateQuestions(int amount)
         {
-            var db = Database.Instance;
+            List<Question> questions = new List<Question>();
+            lock (this)
+            {
+                var db = Database.Instance;
             db.openConnection();
             List<List<Object>> question = db.genericSelect("Question ORDER BY RAND() LIMIT "+amount, "*", null);
-            List<Question> questions = new List<Question>();
+           
             foreach (List<Object> var in question)
             {
                 questions.Add(new Question(var));
             }
             db.closeConnection();
+            }
             return questions;
         }
-        [HttpPost]
-        public void makeQuestions()
-        {
-            HubManager.Instance.makeQuestions(lobby);
-        }
+       
 
         /*[HttpPost]
         public async void UpdateScore([FromBody] Score s)

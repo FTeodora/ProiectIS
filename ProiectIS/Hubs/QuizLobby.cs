@@ -27,8 +27,8 @@ namespace ProiectIS.Hubs
         }
         public async Task SendScore(string lobby,long score)
         {
-            Console.WriteLine(score);
-            await Clients.OthersInGroup(lobby).SendAsync("ReceiveScore", $"{Context.GetHttpContext().Session.GetString("Nume")} ", score);
+           
+            await Clients.OthersInGroup(lobby).SendAsync("ReceiveScore", Context.GetHttpContext().Session.GetString("Nume"), score);
         }
         public async Task SendMessage(string user)
         {
@@ -86,10 +86,7 @@ namespace ProiectIS.Hubs
         {
             return roomList.ContainsKey(room);
         }
-        public void makeQuestions(long room)
-        {
-            roomList[room.ToString()].questions = QuizController.generateQuestions(6);
-        }
+        
         public List<Question> getLobbyQuestions(long room)
         {
             return roomList[room.ToString()].questions;

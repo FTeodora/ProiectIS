@@ -15,7 +15,7 @@ values(3,"Biology","How many legs does a spider have?","2","8","9","6","10",true
 (3,"Biology","What do caterpillars turn into? ","12","Butterflies","Dragon-fly","Fireflies","Worms",true),
 (3,"Culture","On which holiday do you go trick-or-treating?","12","Halloween","Christmas","Easter","New Years Eve",true),
 (3,"Biology","What is a doe?","12","A female deer","A female ox","A female duck","A female horse",true),
-(3,"Biology","What do bees make?","12","Honey","Anthills","Webs","Water",true),
+(3,"Biology","What do bees make?","12","Honey","Anthills","Webs","An annoying sound",true),
 (3,"Culture","What kind of cat is considered bad luck?","12","Black cats","White cats","All cats","Ginger cats",true),
 (3,"Biology","Which is the fastest land animal?","12","Ceetah","Lion","Giraffe","Puma",true);
 insert into savedQuiz(authorID,title) values(3, "Test de test"),(3, "Alt test");

@@ -33,7 +33,12 @@ a {
     gap: 5px;
     margin: 10px;
 }
-
+.options-grid {
+    display: grid;
+    grid-template-columns: repeat(1, auto);
+    gap: 3px;
+    margin: 5px;
+}
 .btn-primary {
     color: #fff;
     background-color: var(--btn);
