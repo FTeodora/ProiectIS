@@ -16,6 +16,13 @@ namespace ProiectIS.Controllers
 
             return getTheGroup(id);
         }
+
+        public IActionResult ToChallenge(long id)
+        {
+
+            return View("Challenge");
+        }
+
         [HttpPost]
         public async void challengeGroup([FromBody]ScheduledQuiz quiz)
         {
