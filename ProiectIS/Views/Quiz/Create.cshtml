@@ -65,12 +65,10 @@
              console.log(e);
          }
      });
-
     }
     searchBtnElement.addEventListener("click", getResults);
     function removeFromQuestions(e){
       var t=e.target;
-
        addedQuestionsElement.removeChild(t.parentElement);
        
   }
@@ -86,11 +84,8 @@
          data: JSON.stringify({title :titleInput.value, questionsId:gathered}),
          contentType: "application/json; ",
          dataType: "json", 
-    success: function(list) {
-        if(list.length>0)
-
-        else
-        searchedQuestionsElement.innerText="Couldn't find any results for your search";
+    success: function() {
+       
         },
          error: function (e) {
              console.log(e);
@@ -100,7 +95,6 @@
   document.querySelector("#submitQuiz").addEventListener('click',sendInfos);
      function addToQuestions(e){
       var t=e.target;
-
        addedQuestionsElement.appendChild(t.parentElement);
       var btn=document.createElement('button');
       btn.classList.add("btn-box");
@@ -126,7 +120,6 @@
         newDiv.appendChild(document.createElement('br'));
         newDiv.appendChild(addBtn);
         searchedQuestionsElement.appendChild(newDiv);
-
     }
     function resetSearched(){
         while (searchedQuestionsElement.firstChild) {

@@ -48,7 +48,8 @@ create table Question(id bigint auto_increment primary key,
                     FOREIGN KEY (authorID) REFERENCES profesor(id) ON DELETE CASCADE
                     
 );
-
+select* from scheduledMatch;
+select  ABS(TIME_TO_SEC(TIMEDIFF('2022-01-19 14:00:00',scheduledTime))/60) from scheduledMatch;
 create table savedQuiz(id bigint auto_increment primary key,
 authorID bigint,
 title varchar(50),
@@ -57,4 +58,4 @@ create table quizQuestions(quizID bigint,questionID bigint,
 FOREIGN KEY (quizID) REFERENCES savedQuiz(id) ON DELETE CASCADE,
 FOREIGN KEY (questionID) REFERENCES question(id) ON DELETE CASCADE);
 create table notification(id bigint auto_increment primary key,recipientID bigint,senderID bigint,message varchar(255),accepted bool,declined bool,lobbyID bigint);
-
+create table groupNotification(id bigint auto_increment primary key,recipientID bigint,senderID bigint,message varchar(255),lobbyID bigint);

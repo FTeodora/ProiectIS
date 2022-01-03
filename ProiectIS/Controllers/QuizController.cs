@@ -135,10 +135,8 @@ namespace ProiectIS.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> insertQuiz([FromBody] SavedQuiz q)
+        public async void insertQuiz([FromBody] SavedQuiz q)
         {
-            if (HttpContext.Session.GetString("id") == null)
-                return Redirect("/Home/Index");
             Database db = Database.Instance;
             db.openConnection();
             List<String> fields = new List<String>();
@@ -160,7 +158,7 @@ namespace ProiectIS.Controllers
                 vals.Add(question);
                 db.genericInsert("quizQuestions", questionField,vals);
             }
-            return Redirect("/Quiz/MyQuizes");
+
 
         }
         public  List<Question> generateQuestions(int amount)

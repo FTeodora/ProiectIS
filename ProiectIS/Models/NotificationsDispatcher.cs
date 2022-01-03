@@ -1,46 +1,37 @@
 ﻿namespace ProiectIS.Models
 {
-    public class NotificationsDispatcher//: IObservable<SavedQuiz>
+    public class NotificationsDispatcher: IObservable<ScheduledQuiz>
     {
-        private List<IObserver<SavedQuiz>> observers;
+
+        private List<IObserver<ScheduledQuiz>> observers;
         public NotificationsDispatcher()
         {
-            observers=new List<IObserver<SavedQuiz>>();
+            observers=new List<IObserver<ScheduledQuiz>>();
         }
-        public IDisposable Subscribe(IObserver<SavedQuiz> observer)
+        public NotificationsDispatcher(DateGrup sender)
+        {
+            observers = new List<IObserver<ScheduledQuiz>>();
+            Subscribe(sender);
+        }
+        public IDisposable Subscribe(IObserver<ScheduledQuiz> observer)
         {
             if (!observers.Contains(observer))
             {
                 observers.Add(observer);
-                
+       
             }
             return new Unsubscriber(observers, observer);
         }
-        /*
-        void IObserver<SavedQuiz>.OnCompleted()
-        {
-            throw new NotImplementedException();
-        }
-
-        void IObserver<SavedQuiz>.OnError(Exception error)
-        {
-            throw new NotImplementedException();
-        }
-
-        void IObserver<SavedQuiz>.OnNext(SavedQuiz value)
-        {
-
-            
-        }*/
+        
         private class Unsubscriber : IDisposable
         {
-            private List<IObserver<SavedQuiz>> _observers;
-            private IObserver<SavedQuiz> _observer;
+            private List<IObserver<ScheduledQuiz>> _observers;
+            private IObserver<ScheduledQuiz> _observer;
 
-            public Unsubscriber(List<IObserver<SavedQuiz>> observers, IObserver<SavedQuiz> observer)
+            public Unsubscriber(List<IObserver<ScheduledQuiz>> observers, IObserver<ScheduledQuiz> observer)
             {
-                this._observers = observers;
-                this._observer = observer;
+                _observers = observers;
+                _observer = observer;
             }
 
             public void Dispose()
@@ -50,7 +41,7 @@
             }
         }
 
-        public void notify(SavedQuiz value)
+        public void notifyObservers(ScheduledQuiz value)
         {
             if (value is null)
             {
@@ -59,10 +50,11 @@
            
             foreach (var observer in observers)
             {
+
                 observer.OnNext(value);
             }
         }
-        public void EndTransmission()
+        public void complete()
         {
             foreach (var observer in observers.ToArray())
                 if (observers.Contains(observer))

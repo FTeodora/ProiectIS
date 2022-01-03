@@ -11,11 +11,13 @@ a.navbar-brand {
 :root {
     --btn: rgb(0, 153, 255);
     --btn-disabled: rgb(122, 202, 255);
-    --column-bg:rgb(161,219,227);
+    --column-bg: rgb(161,219,227);
     --wrong: red;
     --correct: green;
-    --box-bg: rgb(0, 191, 178);
-    --box-btn:rgb(11,57,84);
+    # --box-bg: rgb(0, 191, 178);
+    --box-bg: rgb(0, 0, 128);
+    #--box-btn: rgb(11,57,84);
+    --box-btn: rgb(0, 153, 255);
 }
 
 a {

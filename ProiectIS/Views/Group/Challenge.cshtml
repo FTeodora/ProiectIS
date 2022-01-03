@@ -9,23 +9,166 @@
        var hour;
        var mins;
        var btn;
+       var searchBtn;
+       var input
        var selectedGroup;
        var searchedGroups;
-      function getDate(e){
-       var date = $("#datepicker").datepicker("getDate");
-    console.log($.datepicker.formatDate("yy-mm-dd", date)+" "+hour.value+":"+mins.value);
-  }
-
     window.addEventListener("load",function() {
         $( "#datepicker" ).datepicker();
       btn=document.getElementById("challenge");
+      searchBtn=document.getElementById("searchGroupBtn");
       mins=document.getElementById("mm");
       hour=document.getElementById("hh");
+      input=document.getElementById("groupNameInput")
       selectedGroup=document.getElementById("challengedGroup");
-       btn.addEventListener('click',getDate);
-        
+      searchedGroups=document.getElementById("foundGroups");
+       btn.addEventListener('click',submitChallenge);
+       searchBtn.addEventListener('click',getResults);
+        $.ajax({
+                 type: "POST",
+                 url: '@(Url.Action("getMemberAmount","Group"))',
+                 data: JSON.stringify({id : Number('@ViewData["groupID"]')}),
+                 contentType: "application/json; ",
+                 dataType: "json", 
+                 async:false,
+            success: function(groupCount) {
+                
+                if(groupCount<3)
+                    {
+                        btn.disabled=true;
+                    btn.innerText="You need to have at least 3 student members to submit a challenge";
+                    }
+                },
+                 error: function (e) {
+                     console.log(e);
+                 }
+             });
   })
-  
+  function resetSearched(){
+        while (searchedGroups.firstChild) {
+    searchedGroups.removeChild(searchedGroups.firstChild)
+  }}
+  function setChallenged(wantedGroup){
+      if(selectedGroup.firstChild)
+        selectedGroup.removeChild(selectedGroup.firstChild);
+    selectedGroup.appendChild(wantedGroup)
+  }
+  function showGroup(group){
+        const newDiv=document.createElement('div');
+        newDiv.classList.add('question-box');
+        newDiv.innerText=group.nume+'\n'+group.descriere;
+        var addBtn=document.createElement('button');
+     
+        addBtn.innerText="challenge";
+        addBtn.classList.add("btn-box");
+        newDiv.id=(group.id);
+        newDiv.appendChild(document.createElement('br'));
+        newDiv.appendChild(addBtn);
+        addBtn.addEventListener('click',function (e){
+            
+            setChallenged(newDiv);
+        })
+        
+        searchedGroups.appendChild(newDiv);
+
+    }
+
+    function submitChallenge(e){
+        var date = $("#datepicker").datepicker("getDate");
+        var dateWTime=$.datepicker.formatDate("yy-mm-dd", date)+" "+hour.value+":"+mins.value+":00";
+        var d=new Date(dateWTime);
+        if(!(Object.prototype.toString.call(d) === '[object Date]')||isNaN(d))
+        {
+            alert("Invalid date input. Please select a valid date");
+        
+        }
+        else{
+            todaysDate = Date.now();
+            if(d<=todaysDate)
+                alert("Please select a date after the current moment");
+            else{
+                  $.ajax({
+                         type: "POST",
+                         url: '@(Url.Action("myGroupBusy","Group"))',
+                         data: JSON.stringify({challengedID :'@ViewData["groupID"]',scheduledTime:d}),
+                         contentType: "application/json; ",
+                         dataType: "json", 
+                    success: function(isBusy) {
+                        if(isBusy){
+            
+                            alert("Your group already has another challenge at the selected time");
+                     
+                        }
+                        else {
+                    if(!selectedGroup.firstChild){
+                    alert("Please select a group to challenge");
+           
+                    }else{
+                             var recipientID=parseInt(selectedGroup.firstChild.id);
+                            console.log(d);
+                             $.ajax({
+                             type: "POST",
+                             url: '@(Url.Action("checkPrerequisites","Group"))',
+                             data: JSON.stringify({challengerID :'@ViewData["groupID"]',challengedID:recipientID,scheduledTime:d}),
+                             contentType: "application/json; ",
+                             dataType: "json", 
+                        success: function(wasSubmitted) {
+                            if(!wasSubmitted){
+            
+                                alert("Invited group either doesn't have enough members or is busy at this time");
+                     
+                            }
+                            else{
+                                     $.ajax({
+                                     type: "POST",
+                                     url: '@(Url.Action("challengeGroup","Group"))',
+                                     data: JSON.stringify({challengerID :'@ViewData["groupID"]',challengedID:recipientID,scheduledTime:d}),
+                                     contentType: "application/json; ",
+                                     dataType: "json", 
+                                success:function() { alert("Invitation sent successfully!"); },
+                                     error: function (e) { console.log(e);}
+                                 });
+
+                                location.href="/Group/Index?id="+'@ViewData["groupID"]';
+                            }
+                            },
+                             error: function (e) {
+                                 console.log(e);
+                             }
+                         });
+                        }
+                    }
+                        },
+                         error: function (e) {
+                             console.log(e);
+                         }
+                     });
+               
+            }
+        
+        }
+     }
+
+  function getResults(e){
+
+         resetSearched();
+         $.ajax({
+         type: "POST",
+         url: '@(Url.Action("searchGroup","Group"))',
+         data: JSON.stringify({id:'@ViewData["groupID"]',nume : input.value}),
+         contentType: "application/json; ",
+         dataType: "json", 
+    success: function(list) {
+        if(list.length>0)
+        list.forEach((i)=>showGroup(i));
+        else
+        searchedGroups.innerText="Couldn't find any results for your search";
+        },
+         error: function (e) {
+             console.log(e);
+         }
+     });
+     }
   </script>
 </head>
 <body>
@@ -36,8 +179,8 @@
      <br />
      <div id="challengedGroup"></div>
      <br />
-
- <input type="text" id="groupName" />
+Search a group by name: 
+ <input type="text" id="groupNameInput" />
 <button id="searchGroupBtn" class="btn">search</button><br />
 <div id="foundGroups"></div> <br />
  <button id="challenge" class="btn">challenge</button>
