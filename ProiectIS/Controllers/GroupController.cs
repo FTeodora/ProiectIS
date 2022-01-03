@@ -13,6 +13,13 @@ namespace ProiectIS.Controllers
 
             return getTheGroup(id);
         }
+
+        public IActionResult ToChallenge(long id)
+        {
+
+            return View("Challenge");
+        }
+
         [HttpPost]
         public List<DateGrup> searchGroup(string nume)
         {
