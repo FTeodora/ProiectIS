@@ -3,6 +3,23 @@
 	ViewData["Title"] = ViewData["groupName"]+ " members";
 	List<User> members = (List<User>)ViewData["groupMembers"];
 }
+<script>
+    function kickMember(groupID,memberID){
+        $.ajax({
+         type: "POST",
+         url: 'kickMember',
+         data: JSON.stringify({studentID :memberID, grupID:groupID}),
+         contentType: "application/json; ",
+         dataType: "json", 
+    success: function() {
+       location.reload();
+        },
+         error: function (e) {
+             console.log(e);
+         }
+     });
+    }
+</script>
 <h2>Members</h2>
 
 <table class="table">
@@ -23,7 +40,7 @@
                 <th scope="row">@i.id</th>
                 <td>@i.prenume</td>
                 <td>@i.nume</td>
-                <td><button>kick</button></td>
+                <td><button onclick="kickMember('@ViewData["groupID"]',@i.id);">kick</button></td>
                 </tr>
             }
         

@@ -70,7 +70,12 @@
           usernameElement.innerText=variable;
           var res='@Context.Session.GetString("Rol")';
           usernameElement.addEventListener('click', function(e){
-               if (res.localeCompare("PROFESOR") == 0)
+              if (res.localeCompare("ADMIN") == 0)
+                location.href="/Admin/Index";
+            else
+            if (res.localeCompare("MODERATOR") == 0)
+                location.href="/Moderator/Index";
+           else if (res.localeCompare("PROFESOR") == 0)
                 location.href="/Profesor/Index";
             else
                 location.href="/Student/Index";

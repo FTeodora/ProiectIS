@@ -16,7 +16,9 @@ namespace ProiectIS.Controllers
         {
             idUser = HttpContext.Session.GetString("id");
             var db = Database.Instance;
+            db.openConnection();
             List<List<Object>> res = db.genericSelect("grup g inner join grupmember gl on g.id=gl.grupID", "*", "gl.studentID=" + idUser);
+            db.closeConnection();
             List<DateGrup> groups = new List<DateGrup>();
             foreach (var i in res)
             {
@@ -57,11 +59,11 @@ namespace ProiectIS.Controllers
             fields.Add("grupID");
 
             List<Object> values = new List<object>();
-            values.Add(idUser);
+            values.Add(HttpContext.Session.GetString("id"));
             values.Add(groupID);
-
+            db.openConnection();
             DateReturn resInsert = db.genericInsert("grupmember", fields, values);
-
+            db.closeConnection();
             Console.WriteLine("Studentul a fost adaugat in grupul cu id-ul: " + groupID);
 
             return View("JoinGroup");
@@ -70,13 +72,11 @@ namespace ProiectIS.Controllers
         [HttpPost]
         public IActionResult LeaveGroup([FromForm] long groupID)
         {
-
             idUser = HttpContext.Session.GetString("id");
-
             var db = Database.Instance;
-
+            db.openConnection();
             int resDelete = db.genericDelete("grupmember", "grupID=" + groupID + " and studentID=" + idUser);
-
+            db.closeConnection();
             Console.WriteLine("Studentul a fost sters din grupul cu id-ul: " + groupID);
 
             return View("JoinGroup");
@@ -84,11 +84,13 @@ namespace ProiectIS.Controllers
 
         public IActionResult ToJoinGroup()
         {
+            idUser = HttpContext.Session.GetString("id");
             return View("JoinGroup");
         }
 
         public IActionResult ToLeaveGroup()
         {
+            idUser = HttpContext.Session.GetString("id");
             return View("LeaveGroup");
         }
 

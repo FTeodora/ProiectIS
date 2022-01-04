@@ -23,9 +23,9 @@ namespace ProiectIS.Controllers
         {
             var userID = HttpContext.Session.GetString("user_id");
             Database db = Database.Instance;
-
+            db.openConnection();
             var res = db.genericUpdate("users", "username", username, "id=" + userID);
-
+            db.closeConnection();
             return View("Index");
         }
 
@@ -34,9 +34,9 @@ namespace ProiectIS.Controllers
         {
             var userID = HttpContext.Session.GetString("user_id");
             Database db = Database.Instance;
-
+            db.openConnection();
             var res = db.genericUpdate("users", "pass", pass, "id=" + userID);
-
+            db.closeConnection();
             return View("Index");
         }
 
@@ -45,9 +45,9 @@ namespace ProiectIS.Controllers
         {
             var userID = HttpContext.Session.GetString("user_id");
             Database db = Database.Instance;
-
+            db.openConnection();
             var res = db.genericUpdate("users", "nume", nume, "id=" + userID);
-
+            db.closeConnection();
             return View("Index");
         }
 
@@ -56,9 +56,9 @@ namespace ProiectIS.Controllers
         {
             var userID = HttpContext.Session.GetString("user_id");
             Database db = Database.Instance;
-
+            db.openConnection();
             var res = db.genericUpdate("users", "prenume", prenume, "id=" + userID);
-
+            db.closeConnection();
             return View("Index");
         }
 
@@ -67,9 +67,9 @@ namespace ProiectIS.Controllers
         {
             var userID = HttpContext.Session.GetString("user_id");
             Database db = Database.Instance;
-
+            db.openConnection();
             var res = db.genericUpdate("users", "eMail", email, "id=" + userID);
-
+            db.closeConnection();
             return View("Index");
         }
     }

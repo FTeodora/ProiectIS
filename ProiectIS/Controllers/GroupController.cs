@@ -160,5 +160,13 @@ namespace ProiectIS.Controllers
             }
             return scheduledQuizzes;
         }
+        [HttpPost]
+        public async void kickMember([FromBody]GrupMember member)
+        {
+            Database db = Database.Instance;
+            db.openConnection();
+            db.genericDelete("grupMember","studentID="+member.studentID+" AND grupID="+member.grupID);
+            db.closeConnection();
+        }
     }
 }
