@@ -102,13 +102,22 @@ namespace ProiectIS.Models
             rdr.Close();
             return values;
         }
-        public int genericDelete(string tableName,string criteria)
+        public int genericDelete(string tableName, string criteria)
         {
             MySqlCommand cmd;
             Console.WriteLine("DELETE FROM " + tableName + " WHERE " + criteria);
             cmd = new MySqlCommand("DELETE FROM " + tableName + " WHERE " + criteria, conn);
-            int i=cmd.ExecuteNonQuery();
+            int i = cmd.ExecuteNonQuery();
             return i;
+        }
+
+        public int genericUpdate(string tableName, string fieldName, string fieldValue, string criteria)
+        {
+            Console.WriteLine("update " + tableName + " set " + fieldName + "='" + fieldValue + "' where" + criteria);
+            var cmd = new MySqlCommand($"update " + tableName + " set " + fieldName + "='" + fieldValue + "' where " + criteria, conn);
+            var res = cmd.ExecuteNonQuery();
+
+            return res;
         }
         public String checkUser(string uname, string pass)
         {
