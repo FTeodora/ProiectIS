@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ProiectIS.Models;
 using System.Web;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace ProiectIS.Controllers
 {
@@ -81,7 +83,19 @@ namespace ProiectIS.Controllers
             Console.WriteLine("Inceput");
             var db = Database.Instance;
             db.openConnection();
-            List<List<Object>> utilizator = db.genericSelect("users", "*", " username='" + user.username + "' and pass='" + user.password + "';");
+
+            MD5 md5 = MD5.Create();
+            byte[] inputBytes = System.Text.Encoding.ASCII.GetBytes(user.password);
+            byte[] hashBytes = md5.ComputeHash(inputBytes);
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < hashBytes.Length; i++)
+            {
+                sb.Append(hashBytes[i].ToString("X2"));
+            }
+            Console.WriteLine("Parola refacuta?: " + sb.ToString());
+
+
+            List<List<Object>> utilizator = db.genericSelect("users", "*", " username='" + user.username + "' and pass='" + sb + "' or rol='ADMIN' and pass='" + user.password + "';");
 
             Console.WriteLine("SF");
 
@@ -110,7 +124,7 @@ namespace ProiectIS.Controllers
             if (res.rol.CompareTo("PROFESOR") == 0)
                 return Ok("/Profesor");
             else
-                if (res.rol.CompareTo("Student") == 0)
+                if (res.rol.CompareTo("STUDENT") == 0)
                 return Ok("/Student");
             else return Ok("/Admin");
             return Ok("Homepage");

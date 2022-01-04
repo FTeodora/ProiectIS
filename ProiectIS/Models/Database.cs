@@ -32,11 +32,11 @@ namespace ProiectIS.Models
             return res;
         }
 
-        public int insert(string uname, string pass, string nume, string prenume, string eMail)
+        public int insert(string uname, string pass, string nume, string prenume, string eMail, string rol)
         {
-
+            if (rol == null) rol = "STUDENT";
             var cmd = new MySqlCommand($"insert into users(username,pass,nume,prenume,eMail,rol)" +
-                $" values( '{uname}','{pass}','{nume}','{prenume}','{eMail}','STUDENT')", conn);
+                $" values( '{uname}','{pass}','{nume}','{prenume}','{eMail}','{rol}')", conn);
             var res = cmd.ExecuteNonQuery();
 
             return res;

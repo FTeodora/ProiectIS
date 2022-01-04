@@ -5,20 +5,24 @@
 
 <form>
     <label for="username">Username:</label>
-    <input id="username" name="username"/>
+    <input id="username" name="username" />
     <br>
     <label for="password">Password:</label>
-    <input id="password" type="password" name="password"/>
+    <input id="password" type="password" name="password" />
     <br>
     <label for="nume">Nume:</label>
-    <input id="nume" name="nume"/>
+    <input id="nume" name="nume" />
     <br>
     <label for="Prenume">Prenume:</label>
-    <input id="prenume" name="prenume"/>
+    <input id="prenume" name="prenume" />
     <br>
     <label for="eMail">e-mail:</label>
-    <input id="eMail" name="eMail"/>
+    <input id="eMail" name="eMail" />
     <br>
+    <select name="rol" id="rol">
+        <option value="STUDENT">Student</option>
+        <option value="PROFESOR">Profesor</option>
+    </select>
     <button id="register-btn">Register!</button>
 </form>
 
@@ -31,6 +35,7 @@
         var name = document.querySelector("#nume").value;
         var fname = document.querySelector("#prenume").value;
         var eMail = document.querySelector("#eMail").value;
+        var rol = document.querySelector("#rol").value;
         console.log(`${uname} cu parola ${pass}`)
 
         var res = await fetch('/Register/RegisterUser', {
@@ -41,7 +46,8 @@
                 password: pass,
                 nume: name,
                 prenume: fname,
-                eMail: eMail
+                eMail: eMail,
+                rol: rol
             })
         });
 
