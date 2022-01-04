@@ -1,8 +1,43 @@
 ﻿@{
     ViewData["Title"] = "Group Details";
+    List<User> students = (List<User>)ViewData["students"];
 
 }
 
 <h1>@ViewData["GroupName"] details</h1>
+
+<!--
+//nume
+//descriere
+//lista membri
+//lista de challenge -uri?
+-->
+
+<h2> Description</h2>
+<p>@ViewData["GroupDesc"]</p>
+
+<h2>Members</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">First</th>
+            <th scope="col">Last</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th scope="row">1</th>
+            @foreach (var i in students)
+            {
+                <th scope="row">@i.id</th>
+                <td>@i.prenume</td>
+                <td>@i.nume</td>
+            }
+        </tr>
+
+    </tbody>
+</table>
 
 <a class="btn btn-primary" role="button" asp-controller="Group" asp-action="ToChallenge">To Challenge</a>

@@ -2,19 +2,31 @@
 @{
     ViewData["Title"] = "Quiz Time!";
     ViewData["aaa"] = 0;
+    List<DateGrup> groups = (List<DateGrup>)ViewData["Groups"];
 }
+
+<div class="dropdown">
+    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-toggle="dropdown" aria-expanded="false">
+        View Group
+    </button>
+
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+        @foreach (var i in groups)
+        {
+            <li><a class="dropdown-item" href=@("/Student/Group?res="+i.id)>@i.nume</a></li>
+        }
+    </ul>
+</div>
+
 
 <div class="options-grid">
 
     <form class="options-grid">
         <a class="btn btn-primary" role="button" asp-controller="Student" asp-action="ViewPersonalData">View Personal Data</a>
-         <a class="btn btn-primary" role="button" asp-controller="Quiz" asp-action="Index" asp-route-id="@ViewData["aaa"]">Training</a>
-         <a class="btn btn-primary" role="button" asp-controller="Notifications" asp-action="Index">Challenge Student!</a>
+        <a class="btn btn-primary" role="button" asp-controller="Quiz" asp-action="Index" asp-route-id="@ViewData["aaa"]">Training</a>
+        <a class="btn btn-primary" role="button" asp-controller="Notifications" asp-action="Index">Challenge Student!</a>
+        <a class="btn btn-primary" role="button" asp-controller="Student" asp-action="ToJoinGroup">Join Group</a>
+        <a class="btn btn-primary" role="button" asp-controller="Student" asp-action="ToLeaveGroup">Leave Group</a>
     </form>
-
-
-    <button class="btn btn-primary btn-lg" type="button">Join Group</button>
-    <button class="btn btn-primary me-md-2 btn-lg" type="button">Leave Group</button>
-    
 
 </div>
