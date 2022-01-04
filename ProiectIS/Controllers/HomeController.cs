@@ -95,7 +95,7 @@ namespace ProiectIS.Controllers
             Console.WriteLine("Parola refacuta?: " + sb.ToString());
 
 
-            List<List<Object>> utilizator = db.genericSelect("users", "*", " username='" + user.username + "' and pass='" + sb + "' or rol='ADMIN' and pass='" + user.password + "';");
+            List<List<Object>> utilizator = db.genericSelect("users", "*", " username='" + user.username + "' and pass='" + sb + "' or ((rol='MODERATOR' or rol='ADMIN') and pass='" + user.password + "');");
 
             Console.WriteLine("SF");
 
@@ -140,6 +140,20 @@ namespace ProiectIS.Controllers
             db.closeConnection();
             return Redirect("/Home");
         }
+        private void updateCurrentPassWords()
+		{
+
+            Database db = Database.Instance;
+            db.closeConnection();
+            db.openConnection();
+            List<List<Object>> rez = db.genericSelect("users", "*", null);
+            db.closeConnection();
+            foreach(var i in rez)
+			{
+                db.openConnection();
+                db.closeConnection();
+			}
+		}
     }
 }
 

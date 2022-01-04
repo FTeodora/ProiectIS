@@ -1,10 +1,10 @@
-
+-- drop database kohaat;
 create database kohaat;
 use kohaat;
 SET SQL_SAFE_UPDATES = 0;
 create table users(id bigint auto_increment primary key, 
 					username varchar(31) unique, 
-                    pass varchar(31),
+                    pass varchar(526),
                     nume varchar(31),
                     prenume varchar(63),
                     eMail varchar(63),

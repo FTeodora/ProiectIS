@@ -1,16 +1,17 @@
 
 insert into Users(username,pass,nume,prenume,eMail,rol) values('admin','admin','adminul','adminurilor','admin@gmail.com','ADMIN'),
-('moderator','moderator','domnul','moderator','mod@gmail.com','MODERATOR'),
-('profesor','profesor','domnul','profesor','prof@gmail.com','PROFESOR'),
-('student','student','un','student','stud@gmail.com','STUDENT'),
-('profesor2','profesor2','celalalt','profesor','profesor@yahoo.com','PROFESOR'),
-('profesor3','profesor3','un nou domn','profesor','domn.profesor@yahoo.com','PROFESOR'),
-('student2','student2','alt','student','stud@yahoo.com','STUDENT'),
-('student3','student3','celalalt','student','student@gmail.com','STUDENT'),
-('student4','student4','un nou','student','student4@yahoo.com','STUDENT'),
-('student5','student5','inca un','student','student5@gmail.com','STUDENT'),
-('student6','student6','noul','student','stud.ent6@gmail.com','STUDENT'),
-('student7','student7','un student','in plus','stud.ent7@gmail.com','STUDENT');
+('moderator','moderator','domnul','moderator','mod@gmail.com','MODERATOR');
+
+-- ('profesor','profesor','domnul','profesor','prof@gmail.com','PROFESOR'),
+-- ('student','student','un','student','stud@gmail.com','STUDENT'),
+-- ('profesor2','profesor2','celalalt','profesor','profesor@yahoo.com','PROFESOR'),
+-- ('profesor3','profesor3','un nou domn','profesor','domn.profesor@yahoo.com','PROFESOR'),
+-- ('student2','student2','alt','student','stud@yahoo.com','STUDENT'),
+-- ('student3','student3','celalalt','student','student@gmail.com','STUDENT'),
+-- ('student4','student4','un nou','student','student4@yahoo.com','STUDENT'),
+-- ('student5','student5','inca un','student','student5@gmail.com','STUDENT'),
+-- ('student6','student6','noul','student','stud.ent6@gmail.com','STUDENT'),
+-- ('student7','student7','un student','in plus','stud.ent7@gmail.com','STUDENT')
 insert into Question(authorID,questionSubject,enunt,timeout,correctAnswer,wrongAnswer1,wrongAnswer2,wrongAnswer3,approved) values
 (3,"Proba","Acesta este un enunt de test","12","raspunsul corect","raspuns gresit1","raspuns gresit2","raspuns gresit3",true),
 (3,"Biology","How many legs does a spider have?","2","8","9","6","10",true),
