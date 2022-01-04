@@ -117,5 +117,41 @@ namespace ProiectIS.Controllers
                 return false;
             return true;
         }
+        [HttpPost]
+        public List<ScheduledQuiz> incomingChallenges([FromBody]DateGrup grup)
+        {
+            Database db = Database.Instance;
+            db.openConnection();
+            List<List<Object>> list = db.genericSelect("groupNotification","*","challengedID="+grup.id);
+            db.closeConnection();
+            List<ScheduledQuiz> scheduledQuizzes = new List<ScheduledQuiz>();
+            foreach (var item in list)
+            {
+                ScheduledQuiz q=new ScheduledQuiz(item);
+                q.getName();
+                q.getChallengedName();
+                scheduledQuizzes.Add(q);
+                
+            }
+            return scheduledQuizzes;
+        }
+        [HttpPost]
+        public List<ScheduledQuiz> outcomingChallenges([FromBody] DateGrup grup)
+        {
+            Database db = Database.Instance;
+            db.openConnection();
+            List<List<Object>> list = db.genericSelect("groupNotification", "*", "challengerID=" + grup.id);
+            db.closeConnection();
+            List<ScheduledQuiz> scheduledQuizzes = new List<ScheduledQuiz>();
+            foreach (var item in list)
+            {
+                ScheduledQuiz q = new ScheduledQuiz(item);
+                q.getName();
+                q.getChallengedName();
+                scheduledQuizzes.Add(q);
+
+            }
+            return scheduledQuizzes;
+        }
     }
 }

@@ -13,24 +13,35 @@
         }
         public ScheduledQuiz(List<Object> src)
         {
+            challengerID=(long)src[0];
+            challengedID=(long)src[1];
+            scheduledTime=(DateTime)src[2];
+            challengedName = null;
+            challengerName = null;
 
         }
         public void getName()
         {
-            Database db = Database.Instance;
-            db.openConnection();
-            List <List<Object>> res=db.genericSelect("grup", "nume", "id=" + challengerID);
-            db.closeConnection();
-            challengerName = (string)res[0][0];
+            if(challengerName == null)
+            {
+                Database db = Database.Instance;
+                db.openConnection();
+                List<List<Object>> res = db.genericSelect("grup", "nume", "id=" + challengerID);
+                db.closeConnection();
+                challengerName = (string)res[0][0];
+            }
 
         }
         public void getChallengedName()
         {
-            Database db = Database.Instance;
-            db.openConnection();
-            List<List<Object>> res = db.genericSelect("grup", "nume", "id=" + challengedID);
-            db.closeConnection();
-            challengedName = (string)res[0][0];
+            if(challengedName == null)
+            {
+                Database db = Database.Instance;
+                db.openConnection();
+                List<List<Object>> res = db.genericSelect("grup", "nume", "id=" + challengedID);
+                db.closeConnection();
+                challengedName = (string)res[0][0];
+            }
 
         }
         public static bool checkBusy(ScheduledQuiz src)

@@ -1,4 +1,5 @@
-﻿namespace ProiectIS.Models
+﻿//select * FROM grup WHERE grup.ID NOT IN (SELECT grupID FROM grupMember WHERE studentID=4);
+namespace ProiectIS.Models
 {
     [Serializable]
     public class DateGrup:IObserver<ScheduledQuiz>

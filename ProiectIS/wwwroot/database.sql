@@ -48,8 +48,7 @@ create table Question(id bigint auto_increment primary key,
                     FOREIGN KEY (authorID) REFERENCES profesor(id) ON DELETE CASCADE
                     
 );
-select* from scheduledMatch;
-select  ABS(TIME_TO_SEC(TIMEDIFF('2022-01-19 14:00:00',scheduledTime))/60) from scheduledMatch;
+
 create table savedQuiz(id bigint auto_increment primary key,
 authorID bigint,
 title varchar(50),

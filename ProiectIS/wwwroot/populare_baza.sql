@@ -30,3 +30,4 @@ insert into grup(nume,descriere) values('Grup de proba','Un grup de test cu dest
 										('Grup de proba2','Un alt grup de test cu destui membri'),
                                         ('Grup de proba3','Un grup de test care nu are destui membri');
 insert into grupMember(grupID,studentID,groupScore) values(1,4,1000),(1,7,467),(1,8,784), (2,9,165),(2,10,1000),(2,11,666) ,(3,12,0);
+insert into grupLeader(grupID,profesorID) values(1,3),(2,5),(3,6),(1,5);
