@@ -12,13 +12,16 @@ namespace ProiectIS.Controllers
             var grupID = HttpContext.Session.GetString("groupID");
             Console.WriteLine("Selectati studentii din grupul cu id-ul: " + id);
             var db = Database.Instance;
+            db.openConnection();
             List<List<Object>> res = db.genericSelect("users g inner join grupmember gl on gl.studentID=g.id", "*", "gl.grupID=" + id);
+            db.closeConnection();
             List<User> students = new List<User>();
             foreach (var i in res)
             {
                 students.Add(new User(i));
             }
-
+            ViewData["incomingChallenges"] = incomingChallenges(id);
+            ViewData["outcomingChallenges"] = outcomingChallenges(id);
             ViewData["students"] = students;
             return getTheGroup(id);
         }
@@ -27,13 +30,20 @@ namespace ProiectIS.Controllers
 
             return getTheGroup(id);
         }
-
-        public IActionResult ToChallenge(long id)
+        public IActionResult Members(long id)
         {
-
-            return View("Challenge");
+            var db = Database.Instance;
+            db.openConnection();
+            List<List<Object>> res = db.genericSelect("users g inner join grupmember gl on gl.studentID=g.id", "*", "gl.grupID=" + id);
+            db.closeConnection();
+            List<User> students = new List<User>();
+            foreach (var i in res)
+            {
+                students.Add(new User(i));
+            }
+            ViewData["groupMembers"] = students;
+            return getTheGroup(id);
         }
-
         [HttpPost]
         public async void challengeGroup([FromBody] ScheduledQuiz quiz)
         {
@@ -117,36 +127,33 @@ namespace ProiectIS.Controllers
                 return false;
             return true;
         }
-        [HttpPost]
-        public List<ScheduledQuiz> incomingChallenges([FromBody]DateGrup grup)
+
+        public List<ScheduledQuiz> incomingChallenges(long id)
         {
             Database db = Database.Instance;
             db.openConnection();
-            List<List<Object>> list = db.genericSelect("groupNotification","*","challengedID="+grup.id);
+            List<List<Object>> list = db.genericSelect("scheduledMatch","*","challengedID="+id);
             db.closeConnection();
             List<ScheduledQuiz> scheduledQuizzes = new List<ScheduledQuiz>();
             foreach (var item in list)
             {
                 ScheduledQuiz q=new ScheduledQuiz(item);
                 q.getName();
-                q.getChallengedName();
                 scheduledQuizzes.Add(q);
                 
             }
             return scheduledQuizzes;
         }
-        [HttpPost]
-        public List<ScheduledQuiz> outcomingChallenges([FromBody] DateGrup grup)
+        public List<ScheduledQuiz> outcomingChallenges(long id)
         {
             Database db = Database.Instance;
             db.openConnection();
-            List<List<Object>> list = db.genericSelect("groupNotification", "*", "challengerID=" + grup.id);
+            List<List<Object>> list = db.genericSelect("scheduledMatch", "*", "challengerID=" + id);
             db.closeConnection();
             List<ScheduledQuiz> scheduledQuizzes = new List<ScheduledQuiz>();
             foreach (var item in list)
             {
                 ScheduledQuiz q = new ScheduledQuiz(item);
-                q.getName();
                 q.getChallengedName();
                 scheduledQuizzes.Add(q);
 

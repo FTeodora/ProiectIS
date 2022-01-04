@@ -1,7 +1,8 @@
 ﻿@{
     ViewData["Title"] = "Group Details";
     List<User> students = (List<User>)ViewData["students"];
-
+    List<ScheduledQuiz> incoming = (List<ScheduledQuiz>)ViewData["incomingChallenges"];
+    List<ScheduledQuiz> outcoming = (List<ScheduledQuiz>)ViewData["outcomingChallenges"];
 }
 
 <h1>@ViewData["GroupName"] details</h1>
@@ -15,6 +16,50 @@
 
 <h2> Description</h2>
 <p>@ViewData["GroupDesc"]</p>
+<h2>Received challenges</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Challenger</th>
+            <th scope="col">Challenge Time</th>
+        </tr>
+    </thead>
+    <tbody>
+        
+           
+            @foreach (var i in incoming)
+            {
+                <tr >
+                <th scope="row">@i.challengerName</th>
+                <td>@i.scheduledTime</td>
+                </tr>
+            }
+        
+
+    </tbody>
+</table
+<h2>Sent challenges</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Challenged Group</th>
+            <th scope="col">Challenge Time</th>
+        </tr>
+    </thead>
+    <tbody>
+        
+           
+            @foreach (var i in outcoming)
+            {
+                <tr >
+                <th scope="row">@i.challengedName</th>
+                <td>@i.scheduledTime</td>
+                </tr>
+            }
+        
+
+    </tbody>
+</table>
 
 <h2>Members</h2>
 
@@ -27,17 +72,19 @@
         </tr>
     </thead>
     <tbody>
-        <tr>
-            <th scope="row">1</th>
+        
+           
             @foreach (var i in students)
             {
+                <tr >
                 <th scope="row">@i.id</th>
                 <td>@i.prenume</td>
                 <td>@i.nume</td>
+                </tr>
             }
-        </tr>
+        
 
     </tbody>
 </table>
 
-<a class="btn btn-primary" role="button" asp-controller="Group" asp-action="ToChallenge">To Challenge</a>
+<a class="btn btn-primary" role="button" asp-controller="Group" asp-action="Challenge" asp-route-id="@ViewData["groupID"]">To Challenge</a>

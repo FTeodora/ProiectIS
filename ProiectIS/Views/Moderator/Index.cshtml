@@ -1,0 +1,28 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    List<DateGrup> groups = (List<DateGrup>)ViewData["Groups"];
+}
+<div class="options-grid">
+
+<div class="dropdown">
+    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-toggle="dropdown" aria-expanded="false">
+        Manage group members
+    </button>
+
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+        @foreach (var i in groups)
+        {
+            <li><a class="dropdown-item" href=@("/Group/Members?id="+i.id)>@i.nume</a></li>
+        }
+    </ul>
+</div>
+
+
+
+
+    <form class="options-grid">
+        
+    </form>
+
+</div>
