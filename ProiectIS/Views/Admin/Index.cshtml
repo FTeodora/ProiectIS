@@ -1,0 +1,48 @@
+﻿@{
+    ViewData["Title"] = "Admin";
+}
+
+<!--in homepage sa se poata naviga-->
+<!--username, pass, nume, prenume, email-->
+<!--id-->
+<form method="post" action="/Admin/SubmitUserId">
+    <label for="id">User ID:</label>
+    <input id="id" name="id" />
+    <br>
+    <input type="submit" value="Submit User ID" />
+</form>
+
+<form method="post" action="/Admin/EditUsername">
+    <label for="username">New Username:</label>
+    <input id="username" name="username" />
+    <br>
+    <input type="submit" value="Update Username" />
+</form>
+
+<form method="post" action="/Admin/EditPassword">
+    <label for="pass">New Password:</label>
+    <input id="pass" name="pass" />
+    <br>
+    <input type="submit" value="Update Password" />
+</form>
+
+<form method="post" action="/Admin/EditNume">
+    <label for="nume">New Name:</label>
+    <input id="nume" name="nume" />
+    <br>
+    <input type="submit" value="Update Name" />
+</form>
+
+<form method="post" action="/Admin/EditPrenume">
+    <label for="prenume">New Surname:</label>
+    <input id="prenume" name="prenume" />
+    <br>
+    <input type="submit" value="Update Surname" />
+</form>
+
+<form method="post" action="/Admin/EditEmail">
+    <label for="email">New Email:</label>
+    <input id="email" name="email" />
+    <br>
+    <input type="submit" value="Update Email" />
+</form>

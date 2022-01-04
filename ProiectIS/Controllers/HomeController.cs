@@ -110,8 +110,9 @@ namespace ProiectIS.Controllers
             if (res.rol.CompareTo("PROFESOR") == 0)
                 return Ok("/Profesor");
             else
+                if (res.rol.CompareTo("Student") == 0)
                 return Ok("/Student");
-
+            else return Ok("/Admin");
             return Ok("Homepage");
 
         }

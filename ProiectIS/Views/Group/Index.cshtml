@@ -27,15 +27,16 @@
         </tr>
     </thead>
     <tbody>
-        <tr>
-            <th scope="row">1</th>
-            @foreach (var i in students)
-            {
+
+        @foreach (var i in students)
+        {
+            <tr>
                 <th scope="row">@i.id</th>
                 <td>@i.prenume</td>
                 <td>@i.nume</td>
-            }
-        </tr>
+            </tr>
+        }
+
 
     </tbody>
 </table>
